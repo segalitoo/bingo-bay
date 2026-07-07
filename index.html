@@ -192,17 +192,19 @@
   .p1glance .gs b{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:16px;color:var(--red);line-height:1}
 
   /* ---------- part 2 ---------- */
-  .subnav{margin:0 0 34px;padding:16px 0 18px;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
-  .subnav .snk{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:13px}
+  .subnav{margin:0 0 36px;border:1px solid var(--line2);border-radius:14px;overflow:hidden}
+  .subnav .snk{display:block;padding:13px 18px;background:var(--panel);border-bottom:1px solid var(--line2);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);font-weight:600}
   .subnav .snk b{color:var(--red);font-weight:600}
-  .subnav ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:2px 8px}
+  .subnav ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr}
   .subnav li{margin:0}
-  .subnav a{display:flex;align-items:baseline;gap:9px;padding:7px 9px;border-radius:8px;text-decoration:none;transition:background .15s}
-  .subnav a .n{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--red);flex:none;width:16px}
-  .subnav a .t{font-size:13.5px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .subnav li a{display:flex;align-items:baseline;gap:12px;padding:12px 18px;text-decoration:none;border-top:1px solid var(--line);transition:background .15s}
+  .subnav li:nth-child(-n+2) a{border-top:none}
+  .subnav li:nth-child(2n) a{border-left:1px solid var(--line)}
+  .subnav a .n{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--red);flex:none}
+  .subnav a .t{font-size:13.5px;font-weight:600;color:var(--text);letter-spacing:-.01em}
   .subnav a:hover{background:var(--panel)}
   .subnav a:hover .t{color:var(--red)}
-  @media(max-width:720px){.subnav ol{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:720px){.subnav ol{grid-template-columns:1fr}.subnav li:nth-child(2) a{border-top:1px solid var(--line)}.subnav li:nth-child(2n) a{border-left:none}}
   [id^="p2-"]{scroll-margin-top:78px}
   .lockbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
   .lock{background:var(--white);border:1px solid var(--line2);border-radius:100px;padding:9px 17px;font-size:13px;color:var(--muted);display:inline-flex;gap:8px;align-items:center;font-weight:600}

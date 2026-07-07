@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='.9em' font-size='54'>🦜</text></svg>">
+<title>Bingo Bay: Summer Festival · Fast Scan · AI Creative Manager Submission</title>
+<script src="assets/analytics.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,500;0,700;1,600;1,800;1,900&family=Open+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#FF3344; --redshadow:#BA172A; --black:#000; --white:#FFF;
+    --ink:#0D0D0D; --text:#1A1A1A; --muted:#5C5C5C; --dim:#6A6A6A;
+    --line:#E8E8E8; --line2:#D4D4D4; --paper:#FFF; --panel:#F7F7F7;
+    --red-soft:#FFEBED; --green:#6AEB95;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--text);font-family:'Open Sans',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--red);color:#fff}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  b{color:var(--ink);font-weight:700}
+  .disp{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase}
+
+  .el{position:absolute;border-radius:50%;transform:rotate(-24deg);pointer-events:none}
+  .el.solid{background:var(--red)} .el.outline{border:3px solid var(--red)} .el.far{opacity:.4}
+
+  nav{position:sticky;top:0;z-index:80;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav .bar{max-width:1020px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:10px;height:58px}
+  nav .brand{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:16px;text-transform:uppercase;color:var(--ink)}
+  nav .brand em{color:var(--red);font-style:italic}
+  nav .mode{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:var(--dim);border:1px solid var(--line2);border-radius:100px;padding:4px 11px;font-weight:600}
+  nav .deep{margin-left:auto;font-size:13px;font-weight:700;color:#fff;background:var(--black);text-decoration:none;padding:8px 17px;border-radius:100px;transition:background .15s;white-space:nowrap}
+  nav .deep:hover{background:var(--red)}
+
+  /* hero */
+  .hero{padding:52px 0 40px;position:relative;overflow:hidden}
+  .kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);font-weight:600;display:flex;align-items:center;gap:11px;margin-bottom:18px}
+  .kicker::before{content:"";width:30px;height:3px;background:var(--red)}
+  .hero .grid{display:grid;grid-template-columns:1.4fr 1fr;gap:30px;align-items:center}
+  .hero h1{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;font-size:clamp(30px,4.6vw,50px);line-height:1.0;letter-spacing:-.015em;color:var(--ink)}
+  .hero h1 .hl{color:var(--red)}
+  .hero .lede{font-size:15px;color:var(--muted);margin-top:16px;max-width:520px}
+  .hero img{width:100%;max-width:340px;justify-self:center;filter:drop-shadow(0 14px 32px rgba(0,0,0,.16))}
+  .stats{display:flex;gap:26px;margin-top:26px;flex-wrap:wrap}
+  .stat .n{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:27px;color:var(--red);line-height:1}
+  .stat .l{font-size:11.5px;color:var(--dim);font-weight:600;margin-top:2px}
+
+  /* section frame */
+  section{padding:40px 0 8px;position:relative}
+  section.alt{background:var(--panel)}
+  .part-tag{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap;margin-bottom:8px}
+  .part-tag .pt-num{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:clamp(21px,2.6vw,26px);text-transform:uppercase;color:var(--red);line-height:.9;letter-spacing:-.01em;flex:none}
+  .part-tag .pt-topic{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-bottom:1px}
+  .part-rule{height:3px;background:var(--red);width:100%;margin:0 0 20px;position:relative}
+  .part-rule::after{display:none}
+  h2{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;font-size:clamp(20px,2.8vw,28px);line-height:1.05;color:var(--ink);margin-bottom:8px}
+  .sub{color:var(--muted);font-size:14px;max-width:640px;margin-bottom:22px}
+  .deepline{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--red);text-decoration:none;margin:14px 0 30px}
+  .deepline:hover{color:var(--redshadow)}
+  .deepline::after{content:"→"}
+
+  /* P1 compact pipeline */
+  .phases{display:flex;flex-direction:column;gap:10px}
+  .phrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .phtag{font-family:'Kanit',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:11px;background:var(--black);color:#fff;padding:4px 12px;border-radius:7px;flex:none;min-width:118px;text-align:center}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+  .chip{display:inline-flex;align-items:center;gap:7px;background:var(--white);border:1px solid var(--line2);border-radius:9px;padding:7px 13px;font-size:12.5px;font-weight:700;color:var(--ink)}
+  .chip .g{color:var(--red);font-size:10px}
+  .chip .lp{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)}
+  .p1foot{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+  .kv{flex:1;min-width:240px;background:var(--white);border:1px solid var(--line2);border-radius:12px;padding:13px 16px;font-size:12.5px;color:var(--muted);line-height:1.55}
+  .kv .k{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:3px;color:var(--red)}
+  .kv b{color:var(--ink)}
+
+  /* P2 */
+  .p2grid{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-bottom:14px}
+  .shot{border:1px solid var(--line2);border-radius:14px;overflow:hidden;background:var(--white)}
+  .shot img{width:100%;display:block}
+  .shot .cap{padding:9px 14px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line)}
+  .shot .cap b{color:var(--ink)}
+  .caststrip{display:flex;gap:10px;align-items:flex-end;background:var(--white);border:1px solid var(--line2);border-radius:14px;padding:16px 18px 12px;margin-bottom:14px;flex-wrap:wrap}
+  .cpet{flex:1;min-width:88px;text-align:center}
+  .cpet img{width:100%;max-width:110px;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,.15))}
+  .cpet .nm{font-family:'Kanit',sans-serif;font-style:italic;font-weight:800;font-size:12.5px;text-transform:uppercase;margin-top:4px}
+  .cpet .rl{font-size:9.5px;color:var(--dim);font-weight:600}
+  .quoterow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .quote{background:var(--white);border:1px solid var(--line2);border-radius:12px;padding:14px 16px}
+  .quote .qk{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:5px}
+  .quote .qt{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4}
+  .quote .cta{display:inline-block;margin-top:8px;font-size:11px;font-weight:800;background:var(--red);color:#fff;padding:4px 13px;border-radius:100px}
+  .killcard{display:flex;gap:22px;align-items:center;background:var(--white);border:1px solid var(--line2);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+  .killpair{flex:none;width:300px;display:flex;gap:12px;align-items:flex-start}
+  .killpair figure{flex:1;min-width:0}
+  .killpair img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:9px;display:block;border:1px solid var(--line)}
+  .killpair figure.keep img{border:2px solid var(--red)}
+  .killpair figcaption{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;margin-top:6px}
+  .killpair .rj{color:var(--dim)}
+  .killpair .kp{color:var(--red)}
+  .killtext{flex:1;min-width:0}
+  .killtext .kk{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:9px}
+  .killwhy{font-size:13px;color:var(--muted);line-height:1.55}
+  .killwhy b{color:var(--ink)}
+  .soundmini{background:var(--white);border:1px solid var(--line2);border-radius:14px;padding:14px 18px;margin-bottom:14px}
+  .soundmini .smk{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:11px}
+  .soundmini .smk b{color:var(--red)}
+  .soundmini audio{width:100%;max-width:440px;height:38px;display:block}
+  .soundmini .smnote{font-size:12px;color:var(--muted);line-height:1.5;margin-top:11px}
+  .soundmini .smnote b{color:var(--ink)}
+
+  /* P3 */
+  .flowmini{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .fnode{background:var(--white);border:1px solid var(--line2);border-radius:10px;padding:9px 14px;font-size:12.5px;font-weight:700;color:var(--ink)}
+  .fnode span{display:block;font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.08em;font-weight:600;color:var(--dim);text-transform:uppercase}
+  .fnode.gate{border:2px solid var(--red);background:var(--red-soft)}
+  .fnode.gate span{color:var(--red)}
+  .farrow{color:var(--dim);font-size:14px}
+  .p3stats{display:flex;gap:12px;flex-wrap:wrap}
+
+  /* P4 */
+  .toolrows{display:flex;flex-direction:column;gap:10px}
+  .toolrow{display:flex;gap:16px;align-items:baseline;background:var(--white);border:1px solid var(--line2);border-radius:12px;padding:13px 17px;flex-wrap:wrap}
+  .toolrow .tn{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;font-size:16px;color:var(--ink);min-width:78px}
+  .toolrow p{font-size:13px;color:var(--muted);flex:1;min-width:260px}
+  .toolrow p b{color:var(--ink)}
+
+  /* footer */
+  footer{margin-top:44px;padding:44px 0 54px;text-align:center;background:var(--black);position:relative;overflow:hidden}
+  footer .fdisp{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;font-size:clamp(19px,2.8vw,28px);color:#fff}
+  footer .fdisp .hl{color:var(--red)}
+  footer p{font-size:12.5px;color:#8A8A8A;position:relative;z-index:1;margin-top:10px}
+  footer p b{color:#D0D0D0}
+  footer .deep2{display:inline-block;margin-top:18px;font-size:13.5px;font-weight:700;color:var(--ink);background:#fff;text-decoration:none;padding:10px 22px;border-radius:100px;position:relative;z-index:1;transition:all .15s}
+  footer .deep2:hover{background:var(--red);color:#fff}
+
+  @media(max-width:860px){
+    .hero .grid,.p2grid,.quoterow{grid-template-columns:1fr}
+    .hero img{max-width:250px}
+    .phrow{align-items:flex-start}
+    .killcard{flex-direction:column;align-items:stretch}
+    .killpair{width:100%;max-width:360px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="bar">
+    <span class="brand">Bingo <em>Bay</em></span>
+    <span class="mode">FAST SCAN · 3 MIN</span>
+    <a class="deep" href="index.html">Deep-dive version →</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="el outline far" style="right:150px;bottom:16px;width:70px;height:42px"></span>
+  <span class="el solid" style="right:-70px;bottom:-50px;width:180px;height:110px"></span>
+  <div class="wrap">
+    <div class="kicker">AI Creative Manager · Test Submission · Ran Segal</div>
+    <div class="grid">
+      <div>
+        <h1>One art direction, <span class="hl">55 generations</span>,<br>and every decision documented.</h1>
+        <p class="lede">A creative production system for a <b>Summer Festival</b> event in a new 3D casual Bingo game. This page is the 3-minute scan. Every claim links to full documentation in the deep-dive version.</p>
+        <div class="stats">
+          <div class="stat"><div class="n">55</div><div class="l">generations logged</div></div>
+          <div class="stat"><div class="n">6</div><div class="l">keepers selected</div></div>
+          <div class="stat"><div class="n">11%</div><div class="l">selection rate</div></div>
+          <div class="stat"><div class="n">~7.5h</div><div class="l">saved / week (Part 3)</div></div>
+        </div>
+      </div>
+      <img src="assets/logo_summer.png" alt="Bingo Bay Summer Festival logo">
+    </div>
+  </div>
+</header>
+
+<!-- P1 -->
+<section class="alt">
+  <div class="wrap">
+    <div class="part-tag"><span class="pt-num">Part 01</span><span class="pt-topic">AI Production Workflow</span></div>
+    <div class="part-rule"></div>
+    <h2>Nine stages. One human gate each.</h2>
+    <p class="sub">AI runs the production floor, and a human is the editor on top of it. Automate the mechanical parts, keep the judgment human. Red diamonds mark the human gate in every stage.</p>
+    <div class="phases">
+      <div class="phrow"><span class="phtag">A · Define</span><span class="chips">
+        <span class="chip"><span class="g">◆</span>Ideation</span>
+        <span class="chip"><span class="g">◆</span>Concept &amp; Art Direction</span>
+        <span class="chip"><span class="g">◆</span>UX Exploration</span>
+      </span></div>
+      <div class="phrow"><span class="phtag">B · Produce</span><span class="chips">
+        <span class="chip"><span class="g">◆</span>Visual Assets</span>
+        <span class="chip"><span class="g">◆</span>Music &amp; Sound</span>
+        <span class="chip"><span class="g">◆</span>Copywriting</span>
+        <span class="chip" style="border-style:dashed;color:var(--dim);font-weight:600">3 tracks in parallel</span>
+      </span></div>
+      <div class="phrow"><span class="phtag">C · Ship</span><span class="chips">
+        <span class="chip"><span class="g">◆</span>Review &amp; QA</span>
+        <span class="chip"><span class="g">◆</span>Iteration <span class="lp">↺ max 2 cycles</span></span>
+        <span class="chip"><span class="g">◆</span>Final Delivery</span>
+      </span></div>
+    </div>
+    <div class="p1foot">
+      <div class="kv"><span class="k">#1 Bottleneck</span><b>The human review queue.</b> Fix: automated pre-checks, async batch approvals.</div>
+      <div class="kv"><span class="k">Biggest scale lever</span><b>One approved style fans out</b> to N pets, skins, locales and UA variants via template prompts.</div>
+    </div>
+    <a class="deepline" href="index.html#p1">Full stage-by-stage breakdown: tools, auto vs manual, gates, fixes</a>
+  </div>
+</section>
+
+<!-- P2 -->
+<section>
+  <div class="wrap">
+    <div class="part-tag"><span class="pt-num">Part 02</span><span class="pt-topic">Creative Package</span></div>
+    <div class="part-rule"></div>
+    <h2>Golden Hour Bay: produced, not described.</h2>
+    <p class="sub">One locked art direction (glossy vinyl-toy 3D, golden-hour light, one warm palette). 55 generations in Nano Banana Pro on Google Flow (4-up batches), 6 keepers, every reject documented with its reason.</p>
+    <div class="p2grid">
+      <div class="shot"><img src="assets/app_store.jpeg" alt="Event key art"><div class="cap"><b>Event key art</b> · App Store promo, full cast, logo space held</div></div>
+      <div class="shot"><img src="assets/UI_1.jpeg" alt="Lobby UI"><div class="cap"><b>Event lobby UI</b> · countdown, collection tray, one PLAY action</div></div>
+    </div>
+    <div class="shot" style="margin-bottom:14px"><img src="assets/UI_2.jpeg" alt="Progression UI"><div class="cap"><b>Progression screen</b> · tide-pool collection track, 3 of 4 pets unlocked, host + reward + timer</div></div>
+    <div class="soundmini">
+      <div class="smk">Event soundtrack <b>· selected</b> · Suno · "Bingo at the Beach"</div>
+      <audio controls preload="none" src="assets/event_loop.mp3">Your browser does not support audio playback. The file is at assets/event_loop.mp3.</audio>
+      <div class="smnote">Brightest of five candidates, then hand-finished into an <b>81-second seamless loop</b> and mastered to a mobile-safe −1 dBTP for phone speakers.</div>
+    </div>
+    <div class="caststrip">
+      <div class="cpet"><img src="assets/coral_v2.png" alt="Coral the crab"><div class="rl">Cheerful crab</div></div>
+      <div class="cpet"><img src="assets/shelly_v2.png" alt="Shelly the turtle"><div class="rl">Calm sea turtle</div></div>
+      <div class="cpet"><img src="assets/twinkle_v2.png" alt="Twinkle the starfish"><div class="rl">Sparkly starfish · rare</div></div>
+      <div class="cpet"><img src="assets/splash_v2.png" alt="Splash the dolphin"><div class="rl">Playful dolphin</div></div>
+      <div class="cpet"><img src="assets/mango_v2.png" alt="Mango the toucan"><div class="rl">Festival host</div></div>
+    </div>
+    <div class="killcard">
+      <div class="killpair">
+        <figure><img src="assets/thumbs/crab_01.jpeg" alt="Rejected Coral render"><figcaption class="rj">Rejected</figcaption></figure>
+        <figure class="keep"><img src="assets/thumbs/crab_02.jpeg" alt="Selected Coral render"><figcaption class="kp">Keeper</figcaption></figure>
+      </div>
+      <div class="killtext">
+        <div class="kk">The kill decision · 1 of 49 rejects</div>
+        <p class="killwhy"><b>Killed for the eyes.</b> Same prompt, but the left render has blue eyes and the whole cast is locked to brown with big catchlights. Wrong detail, so it dies. The keeper reads at icon size with the warmest smile and cleanest vinyl-toy gloss. That call, made 55 times, is the job.</p>
+      </div>
+    </div>
+    <div class="quoterow">
+      <div class="quote"><div class="qk">App Store banner · selected</div><div class="qt">Summer Festival is here. Collect them all!</div></div>
+      <div class="quote"><div class="qk">In-game popup · selected</div><div class="qt">The bay is glowing! Four beach pets are waiting, but only until summer ends.</div><span class="cta">JOIN THE FESTIVAL</span></div>
+    </div>
+    <a class="deepline" href="index.html#p2">Full record: all 55 frames with per-image rejection notes, prompts, process docs</a>
+  </div>
+</section>
+
+<!-- P3 -->
+<section class="alt">
+  <div class="wrap">
+    <div class="part-tag"><span class="pt-num">Part 03</span><span class="pt-topic">Workflow Automation</span></div>
+    <div class="part-rule"></div>
+    <h2>Creative briefs: 45 minutes to 2.</h2>
+    <p class="sub">Every asset request becomes a brief. The automation assembles it from the locked art direction, and a human approves it instead of writing it.</p>
+    <div class="flowmini">
+      <span class="fnode"><span>Trigger</span>Slack / Jira intake · 2 min</span><span class="farrow">→</span>
+      <span class="fnode"><span>AI</span>Pull locks + voice guide</span><span class="farrow">→</span>
+      <span class="fnode"><span>AI</span>Assemble brief + prompts</span><span class="farrow">→</span>
+      <span class="fnode gate"><span>◆ Human</span>Lead approves</span><span class="farrow">→</span>
+      <span class="fnode"><span>Out</span>Jira + Drive + log</span>
+    </div>
+    <div class="p1foot">
+      <div class="kv"><span class="k">Time saved · estimate</span><b>~7.5 hours per week</b>, assuming 10 briefs weekly at 45-60 min each by hand. Roughly one workday back for creative direction.</div>
+      <div class="kv"><span class="k">Working prototype</span><b>Built and live</b> on the deep-dive page: pick an asset type, type an intent, get a complete art-direction-locked brief.</div>
+    </div>
+    <a class="deepline" href="index.html#p3">Try the live brief generator</a>
+  </div>
+</section>
+
+<!-- P4 + Bonus -->
+<section>
+  <div class="wrap">
+    <div class="part-tag"><span class="pt-num">Part 04</span><span class="pt-topic">Discovery + Bonus</span></div>
+    <div class="part-rule"></div>
+    <h2>What I would deploy next.</h2>
+    <div class="toolrows">
+      <div class="toolrow"><span class="tn">Bria</span><p><b>IP-safe generation legal can sign.</b> Licensed training data with indemnification, used for every cutout in this submission. Unblocks AI art for commercial release, not just concepting.</p></div>
+      <div class="toolrow"><span class="tn">Rive</span><p><b>Event UI that ships alive.</b> Interactive animation as tiny runtime files inside the game. The lobby above gets water shimmer and pet idles in days, not sprints.</p></div>
+      <div class="toolrow"><span class="tn">Meshy</span><p><b>Concept to 3D draft in minutes.</b> For a 3D title the expensive part is turning a concept into a model, and approved 2D pets become posable blockout meshes the same day.</p></div>
+      <div class="toolrow"><span class="tn" style="color:var(--red)">Bonus</span><p><b>Prompt DNA:</b> art direction as versioned tokens owned by the AD, assembled into prompts, never freehand. Plus a working <b>iteration log tool</b> used live during this production.</p></div>
+    </div>
+    <a class="deepline" href="index.html#p4">Full analysis: who uses each tool, limitations, estimated impact</a>
+  </div>
+</section>
+
+<footer>
+  <span class="el solid" style="left:-50px;bottom:-40px;width:150px;height:92px"></span>
+  <span class="el solid far" style="right:70px;top:16px;width:36px;height:22px"></span>
+  <span class="el solid" style="right:-40px;top:-24px;width:120px;height:74px"></span>
+  <div class="wrap">
+    <div class="fdisp">Thank <span class="hl">you</span>.</div>
+    <p>AI Creative Manager test submission · Ran Segal</p>
+    <a class="deep2" href="index.html">Open the deep-dive version →</a>
+  </div>
+</footer>
+
+</body>
+</html>

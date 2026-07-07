@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='.9em' font-size='54'>🦜</text></svg>">
+<title>Bingo Bay: Summer Festival · AI Creative Manager Submission</title>
+<script src="assets/analytics.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,500;0,700;1,600;1,800;1,900&family=Open+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Lilita+One&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Playtika brand palette (brandbook) */
+    --red:#FF3344; --redshadow:#BA172A;
+    --black:#000000; --white:#FFFFFF;
+    --yellow:#FFD96B; --green:#6AEB95; --blue:#70C8FF; --orange:#FF8850;
+    /* interface neutrals */
+    --ink:#0D0D0D; --text:#1A1A1A; --muted:#5C5C5C; --dim:#6A6A6A;
+    --line:#E8E8E8; --line2:#D4D4D4; --paper:#FFFFFF; --panel:#F7F7F7;
+    --red-soft:#FFEBED; --yellow-soft:#FFF7DF; --green-soft:#E9FBEF; --blue-soft:#EAF6FF; --orange-soft:#FFF0E8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--text);font-family:'Open Sans',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--red);color:#fff}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  b,strong{color:var(--ink);font-weight:700}
+  .disp{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;letter-spacing:-.01em}
+
+  /* ---------- brand ellipses ---------- */
+  .ellipses{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+  .el{position:absolute;border-radius:50%;transform:rotate(-24deg)}
+  .el.solid{background:var(--red)}
+  .el.outline{border:3px solid var(--red);background:transparent}
+  .el.white{background:var(--white)}
+  .el.white.outline{border-color:var(--white);background:transparent}
+  .el.far{opacity:.4}
+
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:80;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav .bar{max-width:1120px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:4px;height:58px;overflow-x:auto;scrollbar-width:none}
+  nav .bar::-webkit-scrollbar{display:none}
+  nav .brand{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:16px;text-transform:uppercase;white-space:nowrap;margin-right:16px;color:var(--ink)}
+  nav .brand em{color:var(--red);font-style:italic}
+  nav a{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:7px 13px;border-radius:100px;white-space:nowrap;transition:all .18s}
+  nav a:hover{color:var(--ink);background:var(--panel)}
+  nav a.on{color:#fff;background:var(--red);font-weight:700}
+  nav a .k{font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:.6;margin-right:4px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:88px 0 64px;position:relative;background:var(--white);overflow:hidden}
+  .kicker{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);font-weight:600;display:flex;align-items:center;gap:11px;margin-bottom:24px}
+  .kicker::before{content:"";width:30px;height:3px;background:var(--red)}
+  .hero h1{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;font-size:clamp(30px,4.2vw,46px);line-height:1.04;letter-spacing:-.015em;max-width:680px;color:var(--ink)}
+  .hero h1 .hl{color:var(--red)}
+  .hero .lede{font-size:clamp(15px,1.9vw,17.5px);color:var(--muted);max-width:620px;margin-top:26px}
+  .hero .lede b{font-weight:700}
+  .hero .logoart{position:absolute;right:-40px;top:52px;width:min(440px,37vw);filter:drop-shadow(0 16px 40px rgba(0,0,0,.18));transform:rotate(3deg);pointer-events:none;animation:float 7s ease-in-out infinite;z-index:1}
+  @media(max-width:1120px){.hero .logoart{position:static;width:72%;max-width:360px;margin:30px auto 0;display:block;transform:none;animation:none}}
+  @keyframes float{0%,100%{transform:rotate(3deg) translateY(0)}50%{transform:rotate(2.2deg) translateY(-12px)}}
+
+  .statstrip{display:flex;flex-wrap:wrap;gap:0;margin-top:48px;border:2px solid var(--black);border-radius:16px;background:var(--white);overflow:hidden;width:fit-content;position:relative;z-index:1}
+  .stat{padding:18px 30px 15px 22px;border-right:2px solid var(--black)}
+  .stat:last-child{border-right:none}
+  .stat .n{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:32px;line-height:1;color:var(--red)}
+  .stat .l{font-size:12px;color:var(--muted);margin-top:5px;font-weight:600}
+
+  /* ---------- section frame ---------- */
+  section{padding:132px 0 94px;scroll-margin-top:70px;position:relative}
+  section.alt{background:var(--panel)}
+  .part-tag{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:11px}
+  .part-tag .pt-num{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:clamp(24px,3vw,33px);text-transform:uppercase;color:var(--red);line-height:.9;letter-spacing:-.01em;flex:none}
+  .part-tag .pt-topic{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;padding-bottom:2px}
+  .part-rule{height:3px;background:var(--red);width:100%;margin:0 0 32px;position:relative}
+  .part-rule::after{display:none}
+  #p3 .pt-topic{color:#A8A8A8}
+  h2{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;font-size:clamp(26px,3.8vw,42px);line-height:1.02;letter-spacing:-.01em;margin-bottom:16px;max-width:800px;color:var(--ink)}
+  h2 .hl{color:var(--red)}
+  .sub{color:var(--muted);font-size:15.5px;max-width:660px;margin-bottom:38px}
+  .sub b{font-weight:700}
+  h3.block{font-family:'Kanit',sans-serif;font-style:normal;font-weight:600;text-transform:uppercase;font-size:20px;letter-spacing:.01em;margin:46px 0 6px;color:var(--ink)}
+  .blocksub{color:var(--dim);font-size:13.5px;margin-bottom:18px}
+
+  /* ---------- part 1 pipeline ---------- */
+  .entryrow{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:14px}
+  .entry{background:var(--black);color:#fff;border-radius:99px;padding:10px 22px;font-family:'Kanit',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:13.5px;white-space:nowrap}
+  .entry span{font-family:'IBM Plex Mono',monospace;font-style:normal;font-weight:500;text-transform:none;font-size:10px;letter-spacing:.04em;color:var(--yellow);margin-left:10px}
+  .entry-arrow{display:block;margin:6px 0 0 30px}
+  .phasehead{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;margin-top:10px;flex-wrap:wrap}
+  .phasehead:first-child{margin-top:0}
+  .phasehead .ptagk{font-family:'Kanit',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.03em;background:var(--black);color:#fff;padding:4px 14px;border-radius:7px}
+  .phasehead .pdesc{font-size:11.5px;color:var(--dim);font-weight:600}
+  .phasehead .par{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--red);border:1.5px dashed var(--red);border-radius:7px;padding:3px 10px;background:var(--red-soft)}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+  .leg{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);font-weight:600}
+  .leg .d{width:10px;height:10px;border-radius:3px}
+  .d.auto{background:var(--green)} .d.hyb{background:var(--yellow)} .d.man{background:var(--red)}
+  .pipe{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:step}
+  .stage{background:var(--white);border:1px solid var(--line2);border-radius:16px;padding:20px 20px 18px;position:relative;transition:border-color .2s,transform .2s,box-shadow .2s}
+  .stage:hover{border-color:var(--black);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+  .stage::before{counter-increment:step;content:"0" counter(step);position:absolute;top:19px;right:16px;font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:13px;color:#fff;background:var(--red);border-radius:7px;padding:3px 8px 2px;line-height:1;letter-spacing:.02em;box-shadow:0 2px 6px rgba(255,51,68,.28)}
+  .stage .rowlist{margin-top:12px}
+  .stage .row{display:flex;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line2);font-size:12.5px;line-height:1.5}
+  .stage .row:first-child{padding-top:2px}
+  .stage .row:last-child{border-bottom:none;padding-bottom:0}
+  .stage .row .rk{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;min-width:58px;padding-top:2px;flex-shrink:0}
+  .stage .row .rv{color:var(--muted)}
+  .stage .row .rv b{color:var(--ink);font-weight:600}
+  .stage .row.gaterow .rk{color:var(--red)}
+  .stage .row.gaterow .rv{color:var(--text)}
+  .stage h4{font-family:'Kanit',sans-serif;font-style:normal;font-weight:700;font-size:16.5px;text-transform:uppercase;margin-bottom:2px;padding-right:48px;color:var(--ink)}
+  .stage .what{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:12px;min-height:40px}
+  .stage .tools{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .tpill{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink);background:var(--panel);border:1px solid var(--line2);padding:3px 8px;border-radius:6px;font-weight:500}
+  .gate{font-size:12px;line-height:1.5;border-radius:9px;padding:8px 11px;display:flex;gap:8px;color:var(--text)}
+  .gate.human{background:var(--red-soft);border:1px solid #FFC4CB}
+  .gate.human::before{content:"HUMAN";font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--red);font-weight:600;padding-top:2px}
+  .gate.note{background:var(--green-soft);border:1px solid #BEEFCE;margin-top:7px}
+  .gate.note::before{content:"SCALE";font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;color:#1E9E52;font-weight:600;padding-top:2px}
+  .stage .outp{display:block;margin-top:5px;font-size:12px;color:var(--muted)}
+  .stage .outp .ok{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-right:5px}
+  .stage .outp b{color:var(--ink)}
+  .bneck{margin-top:7px;font-size:12px;color:var(--dim);line-height:1.5}
+  .bneck b{color:var(--redshadow);font-weight:700}
+  .srow{margin-top:5px;font-size:12px;color:var(--dim);line-height:1.5}
+  .srow b{color:#1E9E52;font-weight:700}
+  .loopbadge{margin-top:10px;border:1.5px dashed var(--red);background:var(--red-soft);border-radius:10px;padding:8px 11px;font-size:12px;line-height:1.5;display:flex;gap:8px;color:var(--text)}
+  .loopbadge .ic{color:var(--red);font-weight:700;font-size:15px;line-height:1}
+  .loopbadge b{color:var(--red)}
+  .pcard ul{list-style:none;margin-top:2px}
+  .pcard li{font-size:12px;color:#BDBDBD;padding:4px 0;display:flex;gap:8px;line-height:1.5}
+  .pcard li b{color:#fff;font-weight:700}
+  .pcard li .m{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--yellow);white-space:nowrap;padding-top:1px;min-width:28px}
+
+  .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+  .pcard{background:var(--black);color:#fff;border-radius:16px;padding:22px;position:relative;overflow:hidden}
+  .pcard h5{font-family:'Kanit',sans-serif;font-style:normal;font-weight:700;font-size:15px;text-transform:uppercase;margin-bottom:8px;display:flex;gap:8px;align-items:center;color:#fff}
+  .pcard h5 .ico{font-size:16px;font-style:normal}
+  .pcard p{font-size:12.5px;color:#BDBDBD;line-height:1.6}
+  .pcard p b{color:#fff}
+  .pcard .pel{position:absolute;right:-26px;bottom:-30px;width:90px;height:56px;border-radius:50%;transform:rotate(-24deg);background:var(--red);opacity:.9}
+
+  /* ---------- part 1 pipeline rail ---------- */
+  .pipewrap{margin-top:6px;position:relative;--railpad:max(28px,calc((100vw - 1120px)/2 + 28px))}
+  .rail-head{display:flex;justify-content:flex-end;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+  .rail-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);font-weight:600}
+  .rail-legend .lg{display:inline-flex;align-items:center;gap:7px}
+  .rail-legend .dot{width:9px;height:9px;border-radius:3px}
+  .rail-legend .dA{background:var(--blue)} .rail-legend .dB{background:var(--yellow)} .rail-legend .dC{background:var(--green)}
+  .rail-ctl{display:flex;align-items:center;gap:10px}
+  .rail-pos{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);font-weight:600;min-width:56px;text-align:right}
+  .rail-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line2);background:var(--white);color:var(--ink);font-size:19px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex:none}
+  .rail-btn:hover:not(:disabled){border-color:var(--red);color:var(--red);transform:translateY(-1px)}
+  .rail-btn:disabled{opacity:.3;cursor:default}
+  .piperail{display:flex;align-items:stretch;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:2px var(--railpad) 36px;scroll-padding-inline:var(--railpad);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .piperail::-webkit-scrollbar{display:none}
+  .railview{position:relative;width:100vw;margin-left:calc(50% - 50vw)}
+  .railfade{position:absolute;top:0;bottom:36px;width:64px;pointer-events:none;z-index:5;opacity:0;transition:opacity .28s ease;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+  .railfade.left{left:0;background:linear-gradient(90deg,var(--paper) 24%,transparent);-webkit-mask:linear-gradient(90deg,#000,transparent);mask:linear-gradient(90deg,#000,transparent)}
+  .railfade.right{right:0;background:linear-gradient(270deg,var(--paper) 24%,transparent);-webkit-mask:linear-gradient(270deg,#000,transparent);mask:linear-gradient(270deg,#000,transparent)}
+  .railfade.on{opacity:1}
+  .pstage{position:relative;overflow:hidden;flex:0 0 min(384px,86%);scroll-snap-align:start;background:var(--white);border:1px solid var(--line2);border-radius:22px;padding:24px 24px 11px;display:flex;flex-direction:column;gap:13px;transition:border-color .2s,box-shadow .2s,opacity .18s linear,filter .18s linear,transform .18s ease}
+  .pstage:hover{border-color:var(--black);box-shadow:0 8px 24px rgba(0,0,0,.07)}
+  .ps-idx{position:absolute;top:16px;right:16px;width:62px;height:48px;border-radius:14px;background:#FBFAFA;display:flex;align-items:center;justify-content:center;z-index:2}
+  .ps-idx span{font-family:'Kanit',sans-serif;font-weight:900;font-size:31px;color:var(--red);line-height:1;letter-spacing:-.01em}
+  .ps-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-right:62px;min-height:20px}
+  .ps-phase{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);display:inline-flex;align-items:center;gap:8px}
+  .ps-phase .pdot{width:9px;height:9px;border-radius:3px;background:var(--dim);flex:none}
+  .ps-phase.pA .pdot{background:var(--blue)} .ps-phase.pB .pdot{background:var(--yellow)} .ps-phase.pC .pdot{background:var(--green)}
+  .ps-par{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--red);border:1px dashed var(--red);border-radius:6px;padding:2px 7px;background:var(--red-soft)}
+  .ps-title{font-family:'Kanit',sans-serif;font-weight:700;font-size:22px;white-space:nowrap;text-transform:uppercase;color:var(--ink);line-height:1.03;letter-spacing:-.005em;padding-right:52px;margin-top:-4px}
+  .ps-does{font-size:14px;line-height:1.4;color:var(--muted)}
+  .ps-does b{color:var(--ink);font-weight:600}
+  .ps-rule{height:0;border:none;border-top:1px dashed var(--line2);margin:1px 0}
+  .ps-lbl{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#141414}
+  .ps-lbl.red{color:var(--red)}
+  .ps-gate{padding:17px 16px;margin:0 -13px;background:linear-gradient(90deg,rgba(255,51,68,.05),rgba(255,51,68,0) 62%);border-radius:8px}
+  .ps-gate .ps-lbl{margin-bottom:5px}
+  .ps-gline{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35}
+  .ps-gline b{font-weight:700}
+  .ps-detail{border:none;border-radius:8px;background:linear-gradient(90deg,#F3F3F3 0%,rgba(251,251,251,0) 100%);padding:2px 16px;margin:0 -13px;flex-grow:1}
+  .ps-row{padding:9px 0;border-top:1px dashed var(--line2)}
+  .ps-row:first-child{border-top:none}
+  .ps-row .ps-line{font-size:14px;color:var(--muted);line-height:1.42;margin-top:3px}
+  .ps-row .ps-line b{color:var(--ink);font-weight:600}
+  .railhint{font-size:12.5px;color:var(--dim);margin-top:12px;line-height:1.5;max-width:720px}
+  .railhint b{color:var(--red)}
+  .p1glance{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:0 0 30px}
+  .p1glance .gs{font-size:12.5px;color:var(--muted);font-weight:600;background:var(--white);border:1px solid var(--line2);border-radius:100px;padding:7px 15px;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+  .p1glance .gs b{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:16px;color:var(--red);line-height:1}
+
+  /* ---------- part 2 ---------- */
+  .subnav{margin:0 0 34px;padding:16px 0 18px;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+  .subnav .snk{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:13px}
+  .subnav .snk b{color:var(--red);font-weight:600}
+  .subnav ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:2px 8px}
+  .subnav li{margin:0}
+  .subnav a{display:flex;align-items:baseline;gap:9px;padding:7px 9px;border-radius:8px;text-decoration:none;transition:background .15s}
+  .subnav a .n{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--red);flex:none;width:16px}
+  .subnav a .t{font-size:13.5px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .subnav a:hover{background:var(--panel)}
+  .subnav a:hover .t{color:var(--red)}
+  @media(max-width:720px){.subnav ol{grid-template-columns:repeat(2,1fr)}}
+  [id^="p2-"]{scroll-margin-top:78px}
+  .lockbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+  .lock{background:var(--white);border:1px solid var(--line2);border-radius:100px;padding:9px 17px;font-size:13px;color:var(--muted);display:inline-flex;gap:8px;align-items:center;font-weight:600}
+  .lock .k{color:var(--red);font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.05em;font-weight:600}
+  .pallock{display:grid;grid-template-columns:0.82fr 1.18fr;gap:30px;align-items:end;margin-bottom:34px}
+  .pallock-txt{display:flex;flex-direction:column;justify-content:center;padding-right:6px}
+  .pallock-txt h3.block{margin:0 0 10px}
+  .pallock-txt .blocksub{margin:0}
+  .palette{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 14px;align-content:center}
+  .sw{display:flex;align-items:center;gap:11px;cursor:pointer;padding:6px;border-radius:8px;transition:background .14s}
+  .sw:hover{background:rgba(0,0,0,.035)}
+  .sw .c{width:30px;height:30px;border-radius:7px;flex:none;border:1px solid rgba(0,0,0,.07)}
+  .sw .m{min-width:0}
+  .sw .nm{font-size:12.5px;font-weight:700;line-height:1.2;color:var(--ink)}
+  .sw .hx{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)}
+
+  .castlock{display:grid;grid-template-columns:0.62fr 1.38fr;gap:36px;align-items:center;margin-bottom:10px}
+  .castlock-txt{display:flex;flex-direction:column;justify-content:center}
+  .castlock-txt .blocksub{margin-bottom:0}
+  .cast{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  .pet{background:transparent;border:none;padding:0 6px;text-align:center;transition:transform .2s;position:relative}
+  .pet:hover{transform:translateY(-4px)}
+  .pet img{width:100%;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}
+  .pet .nm{font-family:'Kanit',sans-serif;font-style:normal;font-weight:700;font-size:15px;line-height:1.15;text-transform:uppercase;margin-top:-4px;color:var(--ink)}
+  .pet .role{font-size:12px;color:var(--muted);line-height:1.4;margin-top:2px}
+  .pet .badge{position:absolute;top:10px;left:10px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:var(--red);color:#fff;font-weight:600}
+  .pet .badge.host{background:var(--black)}
+
+  .showcase{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-bottom:16px}
+  .shot{background:var(--white);border:1px solid var(--line2);border-radius:18px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+  .shot:hover{border-color:var(--black);box-shadow:0 10px 28px rgba(0,0,0,.09)}
+  .shot img{width:100%;display:block}
+  .shot .cap{padding:15px 18px 16px;border-top:1px solid var(--line)}
+  .shot .cap .t{font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:var(--ink)}
+  .st{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.07em;padding:3px 8px;border-radius:6px;font-weight:600;vertical-align:middle;line-height:1.1}
+  .st.done{background:var(--green-soft);border:1px solid #A9E8C0;color:#177A3E}
+  .st.todo{background:var(--red-soft);border:1px solid #FFC4CB;color:var(--redshadow)}
+  .shot .cap p{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.55}
+  .dhero{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:center;background:var(--white);border:1px solid var(--line2);border-radius:18px;overflow:hidden;margin-bottom:16px;transition:border-color .2s,box-shadow .2s}
+  .dhero:hover{border-color:var(--black);box-shadow:0 10px 30px rgba(0,0,0,.07)}
+  .dhero>img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+  .dhero-txt{padding:10px 26px 10px 0}
+  .dhero-k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:9px}
+  .dhero-txt h4{font-family:'Kanit',sans-serif;font-weight:700;font-size:21px;text-transform:uppercase;color:var(--ink);line-height:1.05;margin-bottom:9px}
+  .dhero-txt p{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:13px}
+  .dgrid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+  .dgrid3 .shot img{aspect-ratio:16/9;object-fit:cover}
+  .st.base{background:var(--panel);border:1px solid var(--line2);color:var(--dim)}
+  .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;aspect-ratio:16/10;background:repeating-linear-gradient(45deg,#FAFAFA,#FAFAFA 12px,#F2F2F2 12px,#F2F2F2 24px);color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:12px;text-align:center;padding:20px}
+  .placeholder .big{font-size:26px;opacity:.5}
+
+  /* ---------- event soundtrack player ---------- */
+  .trackcard{position:relative;overflow:hidden;border-radius:20px;padding:22px 24px;margin-bottom:16px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;color:#fff;background:linear-gradient(115deg,#FF8850 0%,#FF6F61 46%,#FF3344 100%);border:1px solid rgba(0,0,0,.06)}
+  .trackcard .disc{width:76px;height:76px;border-radius:50%;flex:none;background:repeating-radial-gradient(circle at 50% 50%,#141414 0 3px,#2a2a2a 3px 5px);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.32),inset 0 0 0 5px rgba(255,255,255,.05);position:relative}
+  .trackcard .disc::after{content:"";width:19px;height:19px;border-radius:50%;background:var(--yellow);box-shadow:inset 0 0 0 4px #FF6F61,0 0 0 1px rgba(0,0,0,.15)}
+  .trackcard.playing .disc{animation:spin 3.6s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .trackcard .tinfo{min-width:0}
+  .trackcard .tk{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .trackcard .tbadge{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.07em;background:rgba(255,255,255,.92);color:var(--redshadow);padding:3px 8px;border-radius:6px;font-weight:700}
+  .trackcard .tt{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;font-size:clamp(20px,2.6vw,25px);line-height:1;letter-spacing:-.01em;margin-bottom:12px}
+  .trackcard .tchips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .trackcard .tchip{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.03em;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.28);border-radius:100px;padding:4px 11px;color:#fff;white-space:nowrap}
+  .trackcard audio{width:100%;max-width:520px;height:40px;display:block}
+  .trackcard .tnote{font-size:12px;line-height:1.55;color:rgba(255,255,255,.92);margin-top:11px}
+  .trackcard .tnote b{color:#fff;font-weight:700}
+  @media(max-width:600px){.trackcard{grid-template-columns:1fr}.trackcard .disc{display:none}}
+
+  /* ---------- app store product-page mockup ---------- */
+  .storeframe{background:var(--white);border:1px solid var(--line2);border-radius:20px;padding:22px 22px 20px;margin-bottom:16px;position:relative}
+  .storehead{display:flex;gap:16px;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line)}
+  .appicon{width:90px;height:90px;border-radius:22%;overflow:hidden;flex:none;background:radial-gradient(125% 125% at 50% 18%,#FFDD93,#FF9E45 55%,#FF6F61);box-shadow:0 6px 16px rgba(0,0,0,.14);display:flex;align-items:flex-end;justify-content:center;border:1px solid rgba(0,0,0,.06)}
+  .appicon img{width:100%;height:100%;object-fit:cover}
+  .appmeta{flex:1;min-width:0}
+  .apptitle{font-size:22px;font-weight:800;color:var(--ink);line-height:1.1}
+  .appsub{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .approw{display:flex;align-items:center;gap:14px;margin-top:13px;flex-wrap:wrap}
+  .getbtn{background:#0A84FF;color:#fff;font-weight:800;font-size:12.5px;letter-spacing:.04em;padding:6px 22px;border-radius:100px}
+  .approw .rt{font-size:12px;color:var(--muted);font-weight:600}
+  .approw .rt b{color:var(--ink)}
+  .approw .age{font-size:11px;color:var(--dim);border:1px solid var(--line2);border-radius:6px;padding:2px 8px;font-weight:600}
+  .storelbl{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;margin:16px 0 10px}
+  .shots{display:flex;gap:11px;overflow-x:auto;padding-bottom:6px}
+  .shots img{height:172px;border-radius:12px;border:1px solid var(--line2);display:block;flex:none}
+  .storenote{margin-top:15px;font-size:12.5px;color:var(--muted);line-height:1.6;background:var(--panel);border:1px dashed var(--line2);border-radius:10px;padding:12px 15px}
+  .storenote b{color:var(--ink)}
+
+  details.doc{background:var(--white);border:1px solid var(--line2);border-radius:14px;margin-bottom:10px;overflow:hidden}
+  details.doc summary{cursor:pointer;padding:15px 20px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:12px;list-style:none;transition:background .15s;color:var(--ink)}
+  details.doc summary:hover{background:var(--panel)}
+  details.doc summary::-webkit-details-marker{display:none}
+  details.doc summary .chev{margin-left:auto;color:var(--dim);transition:transform .2s;font-size:12px}
+  details.doc[open] summary .chev{transform:rotate(90deg)}
+  details.doc summary .tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.06em;color:#fff;background:var(--red);padding:3px 8px;border-radius:6px;font-weight:600}
+  details.doc .inner{padding:4px 20px 20px;border-top:1px solid var(--line)}
+  .docrow{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .docrow:last-child{border-bottom:none}
+  .docrow .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding-top:3px;font-weight:600}
+  .docrow .v{color:var(--muted);line-height:1.6}
+  .docrow .v b{color:var(--ink)}
+
+  .promptbox{background:var(--black);border-radius:12px;overflow:hidden;margin:8px 0}
+  .promptbox .ph{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:#161616;border-bottom:1px solid #2A2A2A}
+  .promptbox .ph .l{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow);font-weight:600}
+  .promptbox pre{padding:14px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.65;color:#D9D9D9;white-space:pre-wrap;word-break:break-word}
+  .copybtn{background:var(--red);border:none;color:#fff;font-family:'Open Sans';font-size:11.5px;font-weight:700;padding:5px 13px;border-radius:7px;cursor:pointer;transition:background .15s,transform .12s}
+  .copybtn:hover{background:var(--redshadow);transform:translateY(-1px)}
+  .copybtn.ok{background:var(--green);color:var(--ink)}
+  .ptabs{display:flex;gap:6px;margin-bottom:9px;flex-wrap:wrap}
+  .ptab{font-family:'Open Sans';font-size:11.5px;font-weight:700;color:var(--muted);background:var(--white);border:1px solid var(--line2);border-radius:8px;padding:5px 12px;cursor:pointer;transition:all .15s}
+  .ptab:hover{border-color:var(--black);color:var(--ink)}
+  .ptab.on{background:var(--black);color:#fff;border-color:var(--black)}
+
+  /* contact sheet */
+  .sheet-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .stab{font-size:12.5px;font-weight:700;color:var(--muted);background:var(--white);border:1px solid var(--line2);border-radius:100px;padding:7px 15px;cursor:pointer;transition:all .15s;display:inline-flex;gap:7px;align-items:center;font-family:'Open Sans'}
+  .stab:hover{color:var(--ink);border-color:var(--black)}
+  .stab.on{background:var(--black);color:#fff;border-color:var(--black)}
+  .stab .ct{font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:.55}
+  .sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:9px}
+  .cell{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line2);aspect-ratio:3/4;background:var(--panel);cursor:pointer;transition:transform .15s,box-shadow .15s}
+  .cell:hover{transform:scale(1.05);z-index:2;box-shadow:0 10px 24px rgba(0,0,0,.15)}
+  .cell img{width:100%;height:100%;object-fit:cover;display:block}
+  .cell.kept{border:3px solid var(--red);box-shadow:0 0 0 2px rgba(255,51,68,.18),0 6px 18px rgba(255,51,68,.18)}
+  .cell.kept::after{content:"KEPT";position:absolute;bottom:6px;left:6px;font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.08em;font-weight:600;color:#fff;background:var(--red);padding:2px 6px;border-radius:5px}
+  .cell .vn{position:absolute;top:5px;right:6px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#fff;background:rgba(0,0,0,.55);padding:2px 6px;border-radius:5px}
+  .sheetnote{font-size:12.5px;color:var(--dim);margin-top:14px}
+  .sheetnote b{color:var(--muted)}
+  .fambar{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid var(--line2);border-radius:12px;padding:10px 14px;margin-bottom:10px;flex-wrap:wrap}
+  .fambar .fbk{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);font-weight:600;flex:none}
+  .fambar .fbv{font-size:12.5px;color:var(--muted);flex:1;min-width:200px}
+  .fambar .fbv b{color:var(--ink);font-weight:600}
+  .fbbtn{font-family:'Open Sans';font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:7px;cursor:pointer;transition:all .15s;background:var(--white);border:1px solid var(--line2);color:var(--muted)}
+  .fbbtn:hover{border-color:var(--black);color:var(--ink)}
+  .fbbtn.solid{background:var(--red);border-color:var(--red);color:#fff}
+  .fbbtn.solid:hover{background:var(--redshadow)}
+  .fbbtn.ok{background:var(--green);border-color:var(--green);color:var(--ink)}
+  .famfull{font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.65;color:var(--muted);background:var(--panel);border:1px dashed var(--line2);border-radius:12px;padding:13px 16px;margin-bottom:10px;white-space:pre-wrap;word-break:break-word}
+  .pop{position:fixed;z-index:120;width:350px;max-width:calc(100vw - 24px);background:var(--white);border:1px solid var(--line2);border-radius:12px;padding:15px 16px;box-shadow:0 6px 16px rgba(0,0,0,.1),0 20px 48px rgba(0,0,0,.16);display:none;pointer-events:none}
+  .pop.on{display:block}
+  .pop .phead{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:11px}
+  .pop .pttl{font-size:13px;font-weight:700;color:var(--ink)}
+  .pop .pst{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.08em;font-weight:600;padding:3px 8px;border-radius:6px}
+  .pop .pst.k{background:var(--red);color:#fff}
+  .pop .pst.r{background:var(--panel);color:var(--dim);border:1px solid var(--line2)}
+  .pop .prow{margin-bottom:9px}
+  .pop .prow:last-child{margin-bottom:0}
+  .pop .pk{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:2px}
+  .pop .pv{font-size:12px;color:var(--muted);line-height:1.55}
+  .pop .pv.mono{font-family:'IBM Plex Mono',monospace;font-size:10.5px;max-height:96px;overflow:hidden}
+  .pop .pv b{color:var(--ink)}
+
+  /* copy options */
+  .copygrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+  .copycard{background:var(--white);border:1px solid var(--line2);border-radius:16px;padding:20px}
+  .copycard h4{font-size:12px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-family:'IBM Plex Mono',monospace;margin-bottom:14px}
+  .copywin{border:1.5px solid var(--red);background:var(--red-soft);border-radius:12px;padding:15px 16px}
+  .copywin .wk{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:8px}
+  .copywin .wk::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red)}
+  .copywin .txt{font-size:16px;font-weight:800;line-height:1.35;color:var(--ink)}
+  .copywin .cta{display:inline-block;margin-top:11px;font-size:12px;font-weight:800;background:var(--red);color:#fff;padding:6px 16px;border-radius:100px;letter-spacing:.02em}
+  .copywin .why{font-size:12px;color:var(--muted);margin-top:11px;padding-top:10px;border-top:1px dashed #F3B8BF;line-height:1.5}
+  .copyalts{margin-top:15px}
+  .copyalts .ah{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:3px}
+  .copyalt{padding:11px 0;border-top:1px dashed var(--line2)}
+  .copyalt:first-of-type{border-top:none;padding-top:5px}
+  .copyalt .txt{font-size:13.5px;font-weight:600;color:var(--muted);line-height:1.42}
+  .copyalt .ctatag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.05em;background:var(--panel);border:1px solid var(--line2);color:var(--dim);padding:2px 8px;border-radius:100px;vertical-align:middle;margin-left:3px}
+  .copyalt .why{font-size:11.5px;color:var(--dim);margin-top:5px;line-height:1.45}
+
+  .refrow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  .refrow .shot img{aspect-ratio:16/8;object-fit:cover}
+  .refmore{margin-top:2px}
+  .refmore>summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--red);padding:4px 0}
+  .refmore>summary::-webkit-details-marker{display:none}
+  .refmore>summary::before{content:"▶";font-size:9px;transition:transform .2s;display:inline-block}
+  .refmore[open]>summary::before{transform:rotate(90deg)}
+  .refmore .refrow{margin-top:12px}
+
+  /* ---------- part 3 (black section) ---------- */
+  #p3{background:var(--black);color:#E4E4E4;overflow:hidden}
+  #p3 h2{color:#fff}
+  #p3 .sub{color:#A8A8A8}
+  #p3 .sub b,#p3 b{color:#fff}
+  .flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin:10px 0 30px}
+  .fnode{flex:1;min-width:150px;background:#141414;border:1px solid #2C2C2C;border-radius:14px;padding:15px 15px 13px;position:relative;margin-right:26px}
+  .fnode:last-child{margin-right:0}
+  .fnode::after{content:"→";position:absolute;right:-22px;top:50%;transform:translateY(-50%);color:#555;font-size:15px}
+  .fnode:last-child::after{content:none}
+  .fnode .fk{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:5px}
+  .fnode h5{font-family:'Kanit',sans-serif;font-style:normal;font-weight:700;font-size:14px;text-transform:uppercase;line-height:1.3;margin-bottom:4px;color:#fff}
+  .fnode p{font-size:11.5px;color:#9C9C9C;line-height:1.5}
+  .fnode.trigger .fk{color:var(--green)} .fnode.ai .fk{color:var(--yellow)}
+  .fnode.gatef{border-color:var(--red);background:linear-gradient(180deg,rgba(255,51,68,.14),#141414)}
+  .fnode.gatef .fk{color:var(--red)}
+  .fnode.out .fk{color:var(--blue)}
+
+  .spec{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:34px}
+  .speccard{background:#141414;border:1px solid #2C2C2C;border-radius:14px;padding:17px 18px}
+  .speccard .k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:8px}
+  .speccard p,.speccard li{font-size:12.5px;color:#A8A8A8;line-height:1.6}
+  .speccard ul{list-style:none}
+  .speccard li{padding-left:14px;position:relative}
+  .speccard li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--red)}
+  .speccard .big{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;font-size:26px;color:var(--yellow);line-height:1.1}
+
+  /* prototype */
+  .proto{background:#111;border:2px solid var(--red);border-radius:22px;padding:28px;position:relative;overflow:hidden}
+  .proto .pel1{position:absolute;top:-70px;right:-50px;width:220px;height:135px;border-radius:50%;transform:rotate(-24deg);background:var(--red);opacity:.16}
+  .proto .pel2{position:absolute;bottom:-60px;left:-70px;width:180px;height:110px;border-radius:50%;transform:rotate(-24deg);border:3px solid var(--red);opacity:.25}
+  .proto .ptag{display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;font-weight:600;color:var(--red);margin-bottom:6px}
+  .proto .ptag .live{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,51,68,.5)}55%{box-shadow:0 0 0 7px rgba(255,51,68,0)}}
+  .proto h3{font-family:'Kanit',sans-serif;font-style:normal;font-weight:800;text-transform:uppercase;font-size:24px;margin-bottom:4px;color:#fff}
+  .proto .psub{font-size:13.5px;color:#A8A8A8;max-width:560px;margin-bottom:22px}
+  .pgrid{display:grid;grid-template-columns:340px 1fr;gap:22px;position:relative}
+  .pform{display:flex;flex-direction:column;gap:13px}
+  .fld label{display:block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#8A8A8A;margin-bottom:5px;font-weight:600}
+  .fld input,.fld select,.fld textarea{width:100%;background:#1C1C1C;border:1px solid #383838;border-radius:10px;color:#F0F0F0;font-family:'Open Sans';font-size:13.5px;padding:10px 13px;outline:none;transition:border-color .15s}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--red)}
+  .fld select{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238A8A8A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+  .fld textarea{resize:vertical;min-height:56px}
+  .genbtn{margin-top:4px;background:var(--red);border:none;color:#fff;font-family:'Kanit',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:16px;letter-spacing:.02em;padding:13px;border-radius:12px;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;box-shadow:0 8px 24px rgba(255,51,68,.3)}
+  .genbtn:hover{transform:translateY(-2px);background:var(--redshadow);box-shadow:0 12px 32px rgba(255,51,68,.4)}
+  .pout{background:#0A0A0A;border:1px solid #2C2C2C;border-radius:14px;display:flex;flex-direction:column;min-height:420px;overflow:hidden}
+  .pout .obar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid #242424;background:#141414}
+  .pout .obar .dots{display:flex;gap:5px}
+  .pout .obar .dots i{width:9px;height:9px;border-radius:50%;background:#333}
+  .pout .obar .fn{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A8A8A;margin-left:4px}
+  .pout .obar .acts{margin-left:auto;display:flex;gap:7px}
+  .pout .obody{padding:18px 20px;font-family:'IBM Plex Mono',monospace;font-size:11.8px;line-height:1.7;color:#D9D9D9;white-space:pre-wrap;overflow:auto;flex:1;max-height:520px}
+  .pout .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;color:#777;font-size:13px;font-family:'Open Sans';text-align:center}
+  .pout .empty .rel{width:64px;height:40px;border-radius:50%;transform:rotate(-24deg);background:var(--red);opacity:.4}
+
+  .mapnote{margin-top:20px;background:rgba(106,235,149,.08);border:1px solid rgba(106,235,149,.3);border-radius:13px;padding:14px 17px;font-size:13px;color:#D8D8D8;line-height:1.6;display:flex;gap:11px}
+  .mapnote::before{content:"PROD";font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--green);font-weight:600;padding-top:3px}
+  .mapnote b{color:var(--green)}
+
+  /* ---------- part 4 ---------- */
+  .tools4{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .tool4{background:var(--white);border:1px solid var(--line2);border-radius:18px;padding:24px 22px;display:flex;flex-direction:column;min-width:0;transition:transform .2s,border-color .2s,box-shadow .2s}
+  .tool4:hover{transform:translateY(-3px);border-color:var(--black);box-shadow:0 12px 30px rgba(0,0,0,.09)}
+  .tool4 .tn{font-family:'Kanit',sans-serif;font-style:normal;font-weight:700;text-transform:uppercase;font-size:22px;margin-bottom:2px;color:var(--ink)}
+  .tool4 .tc{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:14px}
+  .meshproof{display:flex;align-items:center;gap:9px;margin:2px 0 12px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:10px}
+  .meshproof figure{flex:1;text-align:center;min-width:0}
+  .meshproof img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:9px;display:block;border:1px solid var(--line)}
+  .meshproof .arrow{color:var(--red);font-weight:900;font-size:17px;flex:none;font-family:'Kanit',sans-serif}
+  .meshproof figcaption{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-top:5px;font-weight:600}
+  .meshcap{font-size:12px;color:var(--dim);margin:-4px 0 12px;line-height:1.5}
+  .meshcap b{color:var(--ink)}
+  .rivedemo{display:flex;flex-direction:column;align-items:center;gap:8px;margin:2px 0 10px;border:1px solid var(--line2);border-radius:12px;padding:8px 10px 12px;overflow:hidden;background:var(--white)}
+  .rivestage{width:100%;height:92px;min-width:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .rivebtn{--s:.40;--outline:#3f7e17;font-family:'Lilita One','Baloo 2','Trebuchet MS',system-ui,sans-serif;position:relative;flex:none;width:580px;height:134px;border:none;border-radius:44px;cursor:pointer;-webkit-tap-highlight-color:transparent;transform:scale(var(--s));background:radial-gradient(52px 16px at 87% 97%, rgba(210,250,145,.7), rgba(210,250,145,0) 72%),radial-gradient(130% 90% at 50% -25%, rgba(255,255,255,.14), rgba(255,255,255,0) 55%),linear-gradient(180deg,#a0d94f 0%,#8ac83a 45%,#63b426 75%,#4da01c 100%);box-shadow:0 0 0 3px var(--outline),0 5px 0 3px #386f13,0 0 18px 8px rgba(255,243,170,.95),0 0 40px 20px rgba(255,238,150,.55),0 10px 55px 26px rgba(255,235,140,.35),inset 0 3px 1px rgba(255,255,255,.4),inset 0 -20px 28px rgba(40,95,10,.4),inset 14px 0 22px rgba(50,105,15,.22),inset -14px 0 22px rgba(50,105,15,.22),inset 0 -3px 6px rgba(205,242,140,.55);transition:filter .15s ease,transform .12s ease,box-shadow .2s ease;animation:rive-auto 3.4s ease-in-out infinite}
+  .rivebtn::before{content:"";position:absolute;top:6px;left:10px;right:10px;height:40%;border-radius:38px 38px 100% 100% / 38px 38px 90% 90%;background:linear-gradient(180deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.18) 60%,rgba(255,255,255,.04) 100%);pointer-events:none}
+  .rivebtn .label{position:relative;font-family:'Lilita One',cursive;font-size:56px;font-weight:400;letter-spacing:1.5px;color:#f2ffe0;text-transform:uppercase;white-space:nowrap;-webkit-text-stroke:8px #47901d;paint-order:stroke fill;text-shadow:0 4px 0 #37731a,0 6px 8px rgba(35,80,10,.45)}
+  .rivebtn:hover{filter:brightness(1.06) saturate(1.06);transform:translateY(-2px) scale(var(--s));animation:glow-pulse 1.4s ease-in-out infinite}
+  .rivebtn:active{animation:none;filter:brightness(.96);transform:translateY(3px) scale(calc(var(--s)*.985));box-shadow:0 0 0 3px var(--outline),0 2px 0 2px #386f13,0 0 14px 6px rgba(255,243,170,.85),0 0 28px 12px rgba(255,238,150,.45),inset 0 5px 10px rgba(40,95,10,.45),inset 14px 0 22px rgba(50,105,15,.25),inset -14px 0 22px rgba(50,105,15,.25),inset 0 -3px 5px rgba(205,242,140,.5)}
+  .rivebtn:focus-visible{outline:3px solid #fff;outline-offset:8px}
+  .rivedemo figcaption{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600}
+  @keyframes glow-pulse{0%,100%{box-shadow:0 0 0 3px var(--outline),0 5px 0 3px #386f13,0 0 22px 10px rgba(255,245,180,1),0 0 48px 24px rgba(255,240,155,.65),0 12px 62px 30px rgba(255,236,145,.4),inset 0 3px 1px rgba(255,255,255,.45),inset 0 -20px 28px rgba(40,95,10,.4),inset 14px 0 22px rgba(50,105,15,.22),inset -14px 0 22px rgba(50,105,15,.22),inset 0 -3px 6px rgba(205,242,140,.6)}50%{box-shadow:0 0 0 3px var(--outline),0 5px 0 3px #386f13,0 0 30px 14px rgba(255,248,195,1),0 0 62px 30px rgba(255,242,160,.8),0 12px 80px 40px rgba(255,237,150,.5),inset 0 3px 1px rgba(255,255,255,.45),inset 0 -20px 28px rgba(40,95,10,.4),inset 14px 0 22px rgba(50,105,15,.22),inset -14px 0 22px rgba(50,105,15,.22),inset 0 -3px 6px rgba(205,242,140,.6)}}
+  @keyframes rive-auto{0%,36%,100%{transform:scale(var(--s));filter:brightness(1) saturate(1);box-shadow:0 0 0 3px var(--outline),0 5px 0 3px #386f13,0 0 18px 8px rgba(255,243,170,.95),0 0 40px 20px rgba(255,238,150,.55),0 10px 55px 26px rgba(255,235,140,.35),inset 0 3px 1px rgba(255,255,255,.4),inset 0 -20px 28px rgba(40,95,10,.4),inset 14px 0 22px rgba(50,105,15,.22),inset -14px 0 22px rgba(50,105,15,.22),inset 0 -3px 6px rgba(205,242,140,.55)}58%,72%{transform:translateY(-2px) scale(var(--s));filter:brightness(1.06) saturate(1.06);box-shadow:0 0 0 3px var(--outline),0 5px 0 3px #386f13,0 0 30px 14px rgba(255,248,195,1),0 0 62px 30px rgba(255,242,160,.8),0 12px 80px 40px rgba(255,237,150,.5),inset 0 3px 1px rgba(255,255,255,.45),inset 0 -20px 28px rgba(40,95,10,.4),inset 14px 0 22px rgba(50,105,15,.22),inset -14px 0 22px rgba(50,105,15,.22),inset 0 -3px 6px rgba(205,242,140,.6)}}
+  .t4row{padding:9px 0;border-top:1px solid var(--line);font-size:12.5px}
+  .t4row .k{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:3px;font-weight:600}
+  .t4row p{color:var(--muted);line-height:1.55}
+  .t4row p b{color:var(--ink)}
+  .impact{margin-top:auto;padding-top:12px}
+  .impact-lvl{display:inline-flex;align-items:center;gap:7px;margin-top:7px;font-family:'Kanit',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:13.5px;letter-spacing:.01em;line-height:1;padding:6px 12px 7px;border-radius:8px;background:var(--panel);border:1px solid var(--line2)}
+  .impact-lvl::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+  .impact-lvl.cat{color:var(--red)}
+  .impact-lvl.high{color:#1A8F49}
+  .impact-lvl.med{color:#B07A00}
+  .mockbadge{position:absolute;top:14px;right:14px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--dim);background:var(--panel);border:1px dashed var(--line2);border-radius:7px;padding:4px 9px;z-index:2}
+
+  /* ---------- bonus ---------- */
+  .bonusgrid{display:grid;grid-template-columns:1.15fr 1fr;gap:16px}
+  .bonuscard{background:var(--white);border:1px solid var(--line2);border-radius:18px;padding:26px;position:relative;overflow:hidden}
+  .bonuscard h4{font-family:'Kanit',sans-serif;font-style:normal;font-weight:700;text-transform:uppercase;font-size:19px;margin-bottom:10px;color:var(--ink)}
+  .bonuscard p{font-size:13.5px;color:var(--muted);line-height:1.65;margin-bottom:12px}
+  .logcta{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:#fff;font-weight:800;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:100px;margin:4px 0 2px;transition:background .15s,transform .15s,box-shadow .15s;box-shadow:0 8px 22px rgba(255,51,68,.26)}
+  .logcta:hover{background:var(--redshadow);transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,51,68,.34)}
+  .logcta .ar{font-size:15px;line-height:1;transition:transform .15s}
+  .logcta:hover .ar{transform:translate(2px,-2px)}
+  .dna{background:var(--black);border-radius:12px;padding:15px 17px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.9;color:#D9D9D9}
+  .dna .tok{color:var(--yellow)} .dna .var{color:var(--green)} .dna .cm{color:#777}
+
+  /* ---------- status ---------- */
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .col{background:var(--white);border:1px solid var(--line2);border-radius:18px;padding:22px}
+  .col h4{font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;margin-bottom:16px;display:flex;align-items:center;gap:9px}
+  .col.done h4{color:#177A3E} .col.next h4{color:var(--red)}
+  .titem{display:flex;gap:11px;padding:10px 0;border-top:1px solid var(--line);font-size:13.5px;align-items:flex-start}
+  .titem .ck{width:19px;height:19px;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px}
+  .col.done .ck{background:var(--green-soft);border:1px solid #A9E8C0;color:#177A3E}
+  .col.next .ck{background:var(--panel);border:1px solid var(--line2);color:transparent}
+  .titem p{color:var(--muted);line-height:1.5}
+  .titem p b{color:var(--ink)}
+  .titem .est{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);white-space:nowrap;margin-left:auto;padding-top:4px}
+
+  footer{padding:64px 0 74px;text-align:center;background:var(--black);position:relative;overflow:hidden;margin-top:60px}
+  footer .fdisp{font-family:'Kanit',sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;font-size:clamp(22px,3.4vw,34px);color:#fff;line-height:1.05}
+  footer .fdisp .hl{color:var(--red)}
+  footer p{font-size:13px;color:#8A8A8A;position:relative;z-index:1}
+  footer p b{color:#D0D0D0}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:34px;cursor:zoom-out;overflow:auto}
+  .lb.on{display:flex}
+  .lb img{max-width:100%;max-height:74vh;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .lbcap{display:none;background:var(--white);border-radius:12px;padding:14px 16px;max-width:440px;width:calc(100vw - 68px);text-align:left;box-shadow:0 20px 48px rgba(0,0,0,.45)}
+  .lbcap .phead{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:10px}
+  .lbcap .pttl{font-size:13px;font-weight:700;color:var(--ink)}
+  .lbcap .pst{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.08em;font-weight:600;padding:3px 8px;border-radius:6px}
+  .lbcap .pst.k{background:var(--red);color:#fff}
+  .lbcap .pst.r{background:var(--panel);color:var(--dim);border:1px solid var(--line2)}
+  .lbcap .prow{margin-bottom:8px}
+  .lbcap .prow:last-child{margin-bottom:0}
+  .lbcap .pk{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:3px}
+  .lbcap .pv{font-size:13px;color:var(--muted);line-height:1.55}
+  .lbcap .pv b{color:var(--ink)}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:960px){
+    .pipe,.principles,.tools4,.spec{grid-template-columns:1fr 1fr}
+    .cast{grid-template-columns:repeat(3,1fr)}
+    .palette{grid-template-columns:repeat(4,1fr)}
+    .pallock,.castlock,.showcase,.dhero,.pgrid,.bonusgrid,.board,.copygrid{grid-template-columns:1fr}
+    .dgrid3{grid-template-columns:1fr 1fr}
+    .hero .logoart{position:static;width:70%;max-width:340px;margin:30px auto 0;display:block;transform:none;animation:none}
+    .refrow{grid-template-columns:1fr}
+  }
+  @media(max-width:860px){
+    .statstrip{display:grid;grid-template-columns:1fr 1fr;width:100%}
+    .stat{border-right:none}
+    .stat:nth-child(odd){border-right:2px solid var(--black)}
+    .stat:nth-child(n+3){border-top:2px solid var(--black)}
+  }
+  @media(max-width:600px){
+    .pipe,.principles,.tools4,.spec,.dgrid3{grid-template-columns:1fr}
+    .cast{grid-template-columns:repeat(2,1fr)}
+    .stat{padding:14px 18px}
+    .palette{grid-template-columns:1fr 1fr}
+    section{padding:78px 0 54px}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+  @media print{*{animation:none!important}.reveal{opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="bar">
+    <span class="brand">Bingo <em>Bay</em></span>
+    <a href="#p1"><span class="k">01</span>Workflow</a>
+    <a href="#p2"><span class="k">02</span>Creative Package</a>
+    <a href="#p3"><span class="k">03</span>Automation</a>
+    <a href="#p4"><span class="k">04</span>Discovery</a>
+    <a href="#bonus"><span class="k">+</span>Bonus</a>
+    <a href="short.html" style="margin-left:auto;background:var(--black);color:#fff;font-weight:700;flex:none">Fast scan · 3 min</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="ellipses">
+    <span class="el solid" style="right:-120px;top:-95px;width:240px;height:145px"></span>
+    <span class="el outline" style="right:150px;top:20px;width:80px;height:48px"></span>
+    <span class="el solid far" style="right:60px;top:130px;width:38px;height:23px"></span>
+  </div>
+  <div class="wrap">
+    <img class="logoart" src="assets/logo_summer.png" alt="Bingo Bay Summer Festival logo">
+    <div class="kicker">AI Creative Manager · Test Submission · Ran Segal</div>
+    <h1>One locked art direction, and <span class="hl">an event ready to ship</span><br>with a record of every decision behind it.</h1>
+    <p class="lede">A complete creative production system for the <b>Summer Festival</b> event of a new 3D casual Bingo game: the end-to-end AI workflow, the produced asset package with its full iteration history, a working automation prototype, and the tools I would bring into the studio next.</p>
+    <div class="statstrip">
+      <div class="stat"><div class="n">55</div><div class="l">generations logged</div></div>
+      <div class="stat"><div class="n">6</div><div class="l">keepers selected</div></div>
+      <div class="stat"><div class="n">5</div><div class="l">characters cast</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">locked art direction</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PART 1 ============ -->
+<section id="p1">
+  <div class="wrap">
+    <div class="part-tag"><span class="pt-num">Part 01</span><span class="pt-topic">AI Production Workflow</span></div>
+    <div class="part-rule"></div>
+    <h2>Same nine stages, every time.<br><span class="hl">The judgment is what moves.</span></h2>
+    <p class="sub" style="margin-bottom:18px">Idea to delivery in <b>nine stages</b>. AI does the volume work, and a human owns <b>one gate on every stage</b>. Scroll the line to walk all nine.</p>
+    <div class="entryrow reveal">
+      <div class="entry">Brief in <span>business goal · KPIs · audience · from marketing / product</span></div>
+      <svg class="entry-arrow" width="18" height="32" viewBox="0 0 18 32" aria-hidden="true"><line x1="9" y1="1" x2="9" y2="21" stroke="var(--black)" stroke-width="2.5"/><path d="M9 30 L3 19 H15 Z" fill="var(--black)"/></svg>
+    </div>
+
+    <div class="pipewrap">
+      <div class="rail-head">
+        <div class="rail-ctl">
+          <span class="rail-pos" id="railPos">01 / 09</span>
+          <button class="rail-btn" id="railPrev" aria-label="Previous stage" disabled>&lsaquo;</button>
+          <button class="rail-btn" id="railNext" aria-label="Next stage">&rsaquo;</button>
+        </div>
+      </div>
+      <div class="railview">
+        <div class="piperail" id="piperail"></div>
+        <span class="railfade left" id="fadeL"></span>
+        <span class="railfade right" id="fadeR"></span>
+      </div>
+    </div>
+
+    <div class="principles">
+      <div class="pcard reveal"><span class="pel"></span><h5><span class="ico">🎯</span>The human's job</h5><p>The person here works as an <b>editor, not an operator</b>. AI makes the volume, but a human decides every image a player actually sees, and choosing the <b>1 of 12</b> that ships is the part that matters. There is one human gate on every stage.</p></div>
+      <div class="pcard reveal"><span class="pel"></span><h5><span class="ico">⚠️</span>Top bottlenecks</h5>
+        <ul>
+          <li><span class="m">#1</span><span><b>Human review queue</b> · automated pre-checks + batch approvals</span></li>
+          <li><span class="m">#2</span><span><b>Brand consistency at volume</b> · locked refs, seeds, template prompts</span></li>
+          <li><span class="m">#3</span><span><b>Rights &amp; compliance</b> · pre-cleared kits, market priority</span></li>
+          <li><span class="m">#4</span><span><b>Endless iteration</b> · 2 cycles max, ship or kill</span></li>
+        </ul>
+      </div>
+      <div class="pcard reveal"><span class="pel"></span><h5><span class="ico">📈</span>Scaling opportunities</h5>
+        <ul>
+          <li><span class="m">×N</span><span><b>Variant systems</b> from one approved base asset: skins, seasons, UA matrices</span></li>
+          <li><span class="m">LIB</span><span><b>Prompt &amp; pattern libraries</b> · each campaign starts further ahead</span></li>
+          <li><span class="m">KIT</span><span><b>Approved kits</b>: audio identity, voice guide, UX patterns</span></li>
+          <li><span class="m">AUTO</span><span><b>Zero-touch delivery</b> after sign-off</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<section id="p2" class="alt">
+  <div class="wrap">
+    <div class="part-tag"><span class="pt-num">Part 02</span><span class="pt-topic">Creative Production Challenge</span></div>
+    <div class="part-rule"></div>
+    <h2>Golden Hour <span class="hl">Bay</span></h2>
+    <p class="sub">A limited-time <b>Summer Festival</b> event with collectible beach pets. Everything below was produced against one locked art direction: glossy Pixar-like 3D, golden-hour sunset light, one warm palette. It came out of <b>55 generations, 6 of them keepers</b>, and every reject is documented on this page.</p>
+
+    <div class="lockbar">
+      <span class="lock"><span class="k">RENDER</span> Glossy stylized 3D, Pixar-like</span>
+      <span class="lock"><span class="k">LIGHT</span> Golden-hour sunset, warm rim light</span>
+      <span class="lock"><span class="k">CAST</span> 4 collectible pets + 1 host</span>
+      <span class="lock"><span class="k">ENGINE</span> Nano Banana Pro (Google Flow) + Bria + Suno</span>
+    </div>
+
+    <nav class="subnav" aria-label="Part 2 sections">
+      <span class="snk">Part 2 <b>·</b> jump to</span>
+      <ol>
+        <li><a href="#p2-palette"><span class="n">01</span><span class="t">Palette</span></a></li>
+        <li><a href="#p2-cast"><span class="n">02</span><span class="t">Cast</span></a></li>
+        <li><a href="#p2-deliverables"><span class="n">03</span><span class="t">Deliverables</span></a></li>
+        <li><a href="#p2-store"><span class="n">04</span><span class="t">In the store</span></a></li>
+        <li><a href="#p2-process"><span class="n">05</span><span class="t">Process</span></a></li>
+        <li><a href="#p2-copy"><span class="n">06</span><span class="t">Copy</span></a></li>
+        <li><a href="#p2-sheet"><span class="n">07</span><span class="t">All 55 frames</span></a></li>
+        <li><a href="#p2-refs"><span class="n">08</span><span class="t">References</span></a></li>
+      </ol>
+    </nav>
+
+    <div class="pallock" id="p2-palette">
+      <div class="pallock-txt">
+        <h3 class="block">The palette lock</h3>
+        <p class="blocksub">The event's own palette, distinct from this document's chrome. Click any swatch to copy its hex. Every asset on this page lives inside these eight values.</p>
+      </div>
+      <div class="palette" id="palette"></div>
+    </div>
+
+    <div class="castlock" id="p2-cast">
+      <div class="castlock-txt">
+        <h3 class="block">The cast</h3>
+        <p class="blocksub">Four collectibles with distinct silhouettes and one host character. Same style line in every prompt, only the character description changes.</p>
+      </div>
+      <div class="cast">
+        <div class="pet reveal"><img src="assets/coral_v2.png" alt="Coral the crab"><div class="nm">The Cheerful Crab</div></div>
+        <div class="pet reveal"><img src="assets/shelly_v2.png" alt="Shelly the turtle"><div class="nm">The Calm Sea Turtle</div></div>
+        <div class="pet reveal"><img src="assets/twinkle_v2.png" alt="Twinkle the starfish"><div class="nm">The Sparkly Starfish</div></div>
+        <div class="pet reveal"><img src="assets/splash_v2.png" alt="Splash the dolphin"><div class="nm">The Playful Dolphin</div></div>
+        <div class="pet reveal"><img src="assets/mango_v2.png" alt="Mango the toucan"><div class="nm">The Festival Host</div></div>
+      </div>
+    </div>
+
+    <h3 class="block" id="p2-deliverables">Deliverables</h3>
+    <p class="blocksub">Four finished visual pieces composed from the approved keepers, plus the event soundtrack, all produced the same way: many candidates, one keeper, finished by hand. The 55 raw frames they came from are further down.</p>
+
+    <div class="dhero reveal">
+      <img src="assets/app_store.jpeg" alt="Event key art" data-zoom>
+      <div class="dhero-txt">
+        <div class="dhero-k">Flagship · App Store</div>
+        <h4>Event Key Art</h4>
+        <p>The App Store promotional image: full cast at the festival bay, event title band across the top. The frame leads with the world and the cast, and the bingo mechanic is deliberately left out, the way Bingo Blitz sells its own story art.</p>
+        <span class="st done">SELECTED</span>
+      </div>
+    </div>
+
+    <div class="dgrid3">
+      <div class="shot reveal">
+        <img src="assets/UI_1.jpeg" alt="Event lobby UI mockup" data-zoom>
+        <div class="cap"><div class="t">Event Lobby <span class="st done">SELECTED</span></div><p>Pre-event state: countdown, collection tray with one unlocked pet and three teased silhouettes, host on stage left, single PLAY action.</p></div>
+      </div>
+      <div class="shot reveal">
+        <img src="assets/UI_2.jpeg" alt="Event progression UI mockup" data-zoom>
+        <div class="cap"><div class="t">Progression <span class="st done">SELECTED</span></div><p>Tide-pool collection track: 3 of 4 pets unlocked (Twinkle, Coral, Shelly), the fourth still padlocked, Mango hosting from the corner. Progress bar, timer, chest reward and a single KEEP PLAYING action.</p></div>
+      </div>
+      <div class="shot reveal">
+        <img src="assets/scene_02.jpeg" alt="Festival stage background" data-zoom>
+        <div class="cap"><div class="t">Stage Background Plate <span class="st base">BASE ASSET</span></div><p>Generated character-free on purpose: the composition base sitting under the progression screen and future popups.</p></div>
+      </div>
+    </div>
+
+    <div class="trackcard reveal">
+      <div class="disc" aria-hidden="true"></div>
+      <div class="tinfo">
+        <div class="tk">Event Soundtrack <span class="tbadge">SELECTED</span> Suno · "Bingo at the Beach"</div>
+        <div class="tt">The sound of the bay</div>
+        <div class="tchips">
+          <span class="tchip">81s seamless loop</span>
+          <span class="tchip">−1 dBTP mobile-safe</span>
+          <span class="tchip">bright &amp; tropical</span>
+          <span class="tchip">instrumental</span>
+        </div>
+        <audio controls preload="none" src="assets/event_loop.mp3"
+          onplay="this.closest('.trackcard').classList.add('playing')"
+          onpause="this.closest('.trackcard').classList.remove('playing')"
+          onended="this.closest('.trackcard').classList.remove('playing')">
+          Your browser does not support audio playback. The file is at assets/event_loop.mp3.
+        </audio>
+        <div class="tnote">The <b>game-ready master</b>: the brightest, most festive of five Suno candidates, then finished by hand into a seamless loop and peak-limited for phone speakers. Full process below.</div>
+      </div>
+    </div>
+
+    <h3 class="block" id="p2-store">In context · the App Store product page</h3>
+    <p class="blocksub">Where the wordmark actually lives. The key art is a gallery screenshot, not a logo lockup, so it is free to sell the event instead of repeating the brand.</p>
+    <div class="storeframe reveal">
+      <span class="mockbadge">Mockup · illustrative listing</span>
+      <div class="storehead">
+        <div class="appicon"><img src="assets/bingo_bay_icon.jpeg" alt="Bingo Bay app icon"></div>
+        <div class="appmeta">
+          <div class="apptitle">Bingo Bay</div>
+          <div class="appsub">Summer Festival Event · Bingo · Casual</div>
+          <div class="approw">
+            <span class="getbtn">GET</span>
+            <span class="rt" style="color:var(--dim)">★★★★★ · pre-launch mock</span>
+            <span class="age">4+</span>
+          </div>
+        </div>
+      </div>
+      <div class="storelbl">Preview</div>
+      <div class="shots">
+        <img src="assets/app_store.jpeg" alt="Event key art in the store gallery">
+        <img src="assets/UI_1.jpeg" alt="Event lobby in the store gallery">
+        <img src="assets/UI_2.jpeg" alt="Progression screen in the store gallery">
+      </div>
+      <div class="storenote">The <b>Bingo Bay</b> wordmark is carried by the app icon and title above. That is why the key-art screenshot holds no logo and no game name: the product page already says it. Event branding is baked into the frame on purpose, matching Bingo Blitz and App Store category convention.</div>
+    </div>
+
+    <h3 class="block" id="p2-process">Process documentation, per asset</h3>
+    <p class="blocksub">Exactly what the brief asks: prompts, iteration counts, what was rejected and why, editing steps, tools, manual improvements.</p>
+
+    <details class="doc reveal">
+      <summary><span class="tag">KEY ART</span> Event key art: 10 scene explorations, 1 keeper, framed as a store screenshot <span class="chev">▶</span></summary>
+      <div class="inner">
+        <div class="docrow"><div class="k">Tool</div><div class="v"><b>Nano Banana Pro on Google Flow</b> for generation, manual contrast pass on the cast.</div></div>
+        <div class="docrow"><div class="k">Iterations</div><div class="v"><b>10 scene generations</b> (scene_01 to scene_10 in the contact sheet) plus cast group shots. Rejected outcomes: sun too bright and washing out characters, bingo cards too dominant and reading as a casino, cluttered midground stealing focus from the cast, and compositions with no clean band at the top for the event title.</div></div>
+        <div class="docrow"><div class="k">Keeper logic</div><div class="v">The selected frame keeps all five faces readable at thumbnail size, holds a clear band across the top for the SUMMER FESTIVAL title, and leads with the world and the cast rather than the mechanic. Thumbnail-size readability was the kill criterion: App Store art is judged at 160 pixels, not 2K.</div></div>
+        <div class="docrow"><div class="k">Critique pass</div><div class="v">A review round changed the composition on purpose: the <b>four collectible pets moved to full-body foreground heroes</b> and Mango the host moved up to a supporting corner entrance. The collectibles are what the player chases, so they own the frame; the host fronts the event without upstaging the prizes. The version you see is the post-critique cut.</div></div>
+        <div class="docrow"><div class="k">Manual work</div><div class="v">A contrast lift on the cast so faces pop against the sunset sky. The game wordmark is not composited in: this frame ships as an App Store gallery screenshot, so the brand rides on the store icon and title (see the product-page mockup above) and the art carries only the event title.</div></div>
+        <div class="docrow"><div class="k">Prompt</div><div class="v">
+          <div class="promptbox"><div class="ph"><span class="l">Key Art · Hero</span><button class="copybtn">Copy</button></div><pre>Premium stylized 3D render, glossy Pixar-like casual mobile game key art, vertical composition. A joyful summer beach festival at golden-hour sunset. Warm amber and coral sky with a low glowing sun over a calm tropical bay, turquoise water sparkling with warm rim light. On the sand: festive bunting flags, paper lanterns, a small wooden festival stage. Foreground hero group of four cute collectible sea-creature characters with big expressive eyes and soft rounded shapes: a cheerful orange crab with raised claws, a green sea turtle wearing a tropical flower lei, a sparkly pink starfish, and a playful teal dolphin mid-jump. Soft subsurface scattering, glossy highlights, warm cinematic golden-hour lighting, long soft shadows, clean uncluttered background, generous clear space across the top for the event title banner. Vibrant, premium, inviting, high detail, 4k.</pre></div>
+        </div></div>
+      </div>
+    </details>
+
+    <details class="doc reveal">
+      <summary><span class="tag">CHARACTERS</span> Pet cast: 45 generations across 5 characters, one template prompt <span class="chev">▶</span></summary>
+      <div class="inner">
+        <div class="docrow"><div class="k">Tool</div><div class="v"><b>Nano Banana Pro on Google Flow</b> generation, <b>Bria</b> background removal, manual retouch on Mango's edited cutout.</div></div>
+        <div class="docrow"><div class="k">Why Flow</div><div class="v">Google Flow lets me fire <b>4 prompts at once</b> and keeps every result in a scannable gallery, so a whole character explores in one sitting instead of one-render-at-a-time. That batch-and-scan loop kept 55 generations across six families down to a fast afternoon rather than a week of work. The contact sheet below is that gallery, exported.</div></div>
+        <div class="docrow"><div class="k">Iterations</div><div class="v">Coral <b>8</b>, Shelly <b>8</b>, Twinkle <b>12</b>, Splash <b>8</b>, Mango <b>9</b>. Total <b>45</b>. Twinkle needed the most rounds: early versions drifted between "starfish with a face" (too flat) and over-detailed renders that broke the collection's soft look. Common rejection reasons across the cast: style drift from the locked render, inconsistent eye language, poses that break silhouette readability at icon size.</div></div>
+        <div class="docrow"><div class="k">Consistency method</div><div class="v">Every character prompt is identical except for the bracketed description, so there is one frozen style line and a single variable slot. That keeps the five characters reading as one collection, and it lets a future event extend the cast without re-deriving the look.</div></div>
+        <div class="docrow"><div class="k">Consistency pass</div><div class="v">After selection, the five keepers were reviewed <b>side by side against the lock</b>. Splash, Twinkle and Mango got <b>manual AI-assisted retouches</b> (the <span style="font-family:'IBM Plex Mono',monospace;font-size:11px">_edited</span> files) to unify golden-hour lighting, eye highlights and cutout edges. The collection is judged as one set rather than five separate images.</div></div>
+        <div class="docrow"><div class="k">Prompt template</div><div class="v">
+          <div class="promptbox"><div class="ph"><span class="l">Pet · Consistency Template</span><button class="copybtn">Copy</button></div><pre>Cute collectible sea-creature character, glossy stylized 3D render, Pixar-like casual mobile game asset. [CHARACTER: e.g. a cheerful orange crab with raised claws and a tiny flower lei]. Big expressive friendly eyes, soft rounded shapes, glossy highlights, subsurface scattering, warm golden-hour lighting, subtle rim light. Centered, full body, clean neutral soft-gradient background for easy cutout, consistent character style, premium mobile game quality, high detail.</pre></div>
+        </div></div>
+      </div>
+    </details>
+
+    <details class="doc reveal">
+      <summary><span class="tag">UI</span> Both mockups shipped: lobby + progression, one plate lineage <span class="chev">▶</span></summary>
+      <div class="inner">
+        <div class="docrow"><div class="k">Method</div><div class="v">Background plates generated <b>without characters or text</b>, then screens composed: UI chrome, countdown, collection tray and buttons layered over the plate. The generated art is just scenery. The interface logic is design work, and that part is not done by prompting.</div></div>
+        <div class="docrow"><div class="k">Lobby (done)</div><div class="v">Countdown builds anticipation pre-launch, one unlocked pet plus three locked silhouettes drive collection desire, single green PLAY is the only saturated cool accent on screen so the eye lands there.</div></div>
+        <div class="docrow"><div class="k">Progression (done)</div><div class="v">Tide-pool collection track: four pools along the shoreline, three pets surfaced (Twinkle, Coral, Shelly), the fourth locked with Splash waiting inside. Mango hosts from the corner, progress bar in Sunset Gold reads 3/4, chest reward and event timer at top, single green KEEP PLAYING reused from the lobby. Same locked palette and render as every other asset.</div></div>
+        <div class="docrow"><div class="k">Prompts</div><div class="v">
+          <div class="ptabs" id="uiPtabs">
+            <button class="ptab on" data-ui="plate">Scene plate</button>
+            <button class="ptab" data-ui="lobby">Lobby</button>
+            <button class="ptab" data-ui="prog">Progression</button>
+          </div>
+          <div class="promptbox"><div class="ph"><span class="l" id="uiPlabel">UI · Scene Plate</span><button class="copybtn" id="uiPcopy">Copy</button></div><pre id="uiPprompt">Mobile game UI background, glossy stylized 3D casual game, summer beach festival at golden-hour sunset, tropical bay with sparkling turquoise water, warm amber sky, paper lanterns and bunting, soft depth of field, no characters, no text, clean composition with clear central space for UI panels, premium casual mobile game art, vertical 9:16 aspect.</pre></div>
+        </div></div>
+      </div>
+    </details>
+
+    <details class="doc reveal">
+      <summary><span class="tag">MUSIC</span> Event loop: 5 candidates generated, 1 selected, engineered into a game-ready loop <span class="chev">▶</span></summary>
+      <div class="inner">
+        <div class="docrow"><div class="k">Tool</div><div class="v"><b>Suno</b> for generation, then a manual audio-engineering pass (edit, loop, master) outside the model. The model gives raw musical material; a shippable game loop is a separate craft step.</div></div>
+        <div class="docrow"><div class="k">Iterations</div><div class="v"><b>5 candidates</b> generated: <i>Bingo at the Beach</i>, <i>Sunny Reception v1</i>, <i>Sunny Reception v2</i>, <i>Sunshine Circuit</i>, and <i>Tropical Welcome</i>. Rejected outcomes and why: <b>Sunny Reception v2</b> came out the darkest and bassiest, so it read heavier than a summer event wants; <b>Sunshine Circuit</b> was built as a one-shot with a long fade-in that will not loop cleanly; <b>Tropical Welcome</b> had the best name but was slowed to 0.75x, which flattened its energy and left the weakest loop point. <b>Sunny Reception v1</b> is the polished runner-up, held as the calmer alternate.</div></div>
+        <div class="docrow"><div class="k">Keeper logic</div><div class="v"><b>Bingo at the Beach</b> won on measured fit, not vibe alone: across five takes on the same 70 BPM tropical-pop reception brief, it is the brightest and warmest, and the title ties the game and the setting together. Selection was scored on brightness and warmth for a sunny midday reception, plus loop integrity for a long mobile session, rather than a single listen.</div></div>
+        <div class="docrow"><div class="k">Manual work</div><div class="v">The raw render was not loop-ready, so I finished it by hand: <b>trimmed the soft fade-in intro</b> that caused a dip on every repeat, built a <b>seamless 81-second loop</b> from the sustained-energy section (35s to 117s) with a 2-second equal-power crossfade wrapping the tail back into the head, and pulled the true peak from a clipping-hot 0.0 dBTP down to a <b>mobile-safe −1 dBTP</b>. The player above is that master.</div></div>
+        <div class="docrow"><div class="k">Close call</div><div class="v">My ear preferred <i>Sunny Reception v1</i>, the ukulele felt warmer and more natural, and I nearly led with it. So I re-listened against the real brief: a loop that has to hold up past thirty repetitions, on a phone speaker, without stepping on the win fanfares. On that test <b>Bingo at the Beach</b> stayed pleasant while <i>Sunny Reception</i> started to grate. I would happily hear Sunny Reception once, but I pick for the player who hears it forty times a session. The loop won.</div></div>
+        <div class="docrow"><div class="k">Judgment criteria</div><div class="v">Loops without a seam, stays friendly under 30 repetitions, no melody hook so prominent it fights the win fanfares, and sits under the SFX bus without fatiguing.</div></div>
+        <div class="docrow"><div class="k">If more time</div><div class="v">The crossfade masks a slightly imperfect beat-phase alignment at the seam. For a truly bar-locked loop I would re-prompt Suno for a shorter, structured stem with a defined bar count rather than editing a through-composed 2.6-minute render, the same "re-prompt over patch" call I would make on any asset.</div></div>
+        <div class="docrow"><div class="k">Prompt</div><div class="v">
+          <div class="promptbox"><div class="ph"><span class="l">Suno · Event Loop · prompt as used</span><button class="copybtn">Copy</button></div><pre>tropical pop, casual bingo mobile game music, upbeat 70 BPM, ukulele fingerpicking, marimba ostinato, steel drum lead, acoustic bass groove, syncopated hand percussion, brushed shakers, glockenspiel accents, bright major key, seamless loop, polished game audio, sunny mid day reception festival feel, playful warmth, creating a reception atmosphere at the event</pre></div>
+        </div></div>
+      </div>
+    </details>
+
+    <h3 class="block" id="p2-copy">Marketing copy</h3>
+    <p class="blocksub">Voice: warm summer energy, collection-first, a little gentle FOMO. I wrote three options per placement and the selected line ships. The passed options stay documented with their reason, the same discipline as the contact sheet below.</p>
+    <div class="copygrid">
+      <div class="copycard reveal">
+        <h4>App Store feature banner · 5-8 words</h4>
+        <div class="copywin">
+          <div class="wk">Selected · ships</div>
+          <div class="txt">Summer Festival is here. Collect them all!</div>
+          <div class="why">Event name plus the whole game loop in one imperative.</div>
+        </div>
+        <div class="copyalts">
+          <div class="ah">Passed alternatives</div>
+          <div class="copyalt"><div class="txt">New beach pets. Limited time. Dive in!</div><div class="why">Punchier rhythm, but loses the festival brand.</div></div>
+          <div class="copyalt"><div class="txt">Meet Coral, Shelly, Twinkle and Splash!</div><div class="why">Names build attachment, but mean nothing pre-install.</div></div>
+        </div>
+      </div>
+      <div class="copycard reveal">
+        <h4>In-game popup · one line + CTA</h4>
+        <div class="copywin">
+          <div class="wk">Selected · ships</div>
+          <div class="txt">The bay is glowing! Four beach pets are waiting, but only until summer ends.</div>
+          <div class="cta">JOIN THE FESTIVAL</div>
+          <div class="why">World-building first, deadline second, and the CTA does the work.</div>
+        </div>
+        <div class="copyalts">
+          <div class="ah">Passed alternatives</div>
+          <div class="copyalt"><div class="txt">Mango's throwing a party at Bingo Bay. Your first pet is already waiting! <span class="ctatag">CLAIM MY PET</span></div><div class="why">Host-led and personal, strongest for D1 re-engagement.</div></div>
+          <div class="copyalt"><div class="txt">Twinkle is the rarest catch of the season. Start collecting today! <span class="ctatag">START COLLECTING</span></div><div class="why">Rarity-led, better as a mid-event nudge than a launch popup.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="block" id="p2-sheet">The full iteration record</h3>
+    <p class="blocksub">All 55 generations, nothing hidden, exported from the <b>Google Flow</b> gallery I iterated in (Nano Banana Pro, 4 prompts per batch). Each family runs on one shared prompt, shown above its frames; hover any frame for its tool and selection note. Red ring marks the keeper. This is the discipline I would make standard in the studio: the rejects are where the decisions are visible, and the keepers are only the result.</p>
+    <div class="sheet-tabs" id="sheetTabs"></div>
+    <div class="fambar">
+      <span class="fbk">Prompt</span>
+      <span class="fbv">locked template + <b id="famDesc"></b></span>
+      <button class="fbbtn" id="famToggle">Full template</button>
+      <button class="fbbtn solid" id="famCopy">Copy</button>
+    </div>
+    <pre class="famfull" id="famFull" hidden></pre>
+    <div class="sheet" id="sheet"></div>
+    <p class="sheetnote">Selection rate: <b>6 of 55 (11%)</b>. A low keep rate is what I want here. It means the locked direction did the filtering, rather than cautious prompting.</p>
+    <p class="sheetnote"><b>What the keepers share:</b> one glossy vinyl-toy 3D render, a warm peach-to-cream studio gradient, brown eyes with large catchlights, grounded three-quarter poses, and tropical props in one palette. Every rejection above fails one of those: a background off palette, an eye-rule break, an outside prop, or a material that drifts. scene_02 won as the only background in that same 3D style, so the pack reads as one production.</p>
+
+    <h3 class="block" id="p2-refs">Reference research</h3>
+    <p class="blocksub">Playtika's own live product, Bingo Blitz, studied before generating anything: event framing, popup anatomy, currency placement, tone. The Summer Festival package matches that product language while pushing the render quality a generation ahead.</p>
+    <details class="refmore">
+      <summary>View the 3 Bingo Blitz reference screens</summary>
+      <div class="refrow">
+        <div class="shot reveal"><img src="assets/refs/IMG_0748.jpg" alt="Bingo Blitz reference 1" data-zoom></div>
+        <div class="shot reveal"><img src="assets/refs/IMG_0750.jpg" alt="Bingo Blitz reference 2" data-zoom></div>
+        <div class="shot reveal"><img src="assets/refs/IMG_0752.jpg" alt="Bingo Blitz reference 3" data-zoom></div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============ PART 3 ============ -->
+<section id="p3">
+  <div class="ellipses">
+    <span class="el white outline far" style="right:-50px;top:40px;width:150px;height:92px"></span>
+    <span class="el solid far" style="right:140px;top:180px;width:44px;height:27px"></span>
+  </div>
+  <div class="wrap">
+    <div class="part-tag"><span class="pt-num">Part 03</span><span class="pt-topic">AI Workflow Automation</span></div>
+    <div class="part-rule"></div>
+    <h2>The brief writes itself.<br><span style="color:var(--red)">A human still signs it off.</span></h2>
+    <p class="sub">Chosen task: <b>creative briefs</b>. Every asset request becomes a brief, and most eat 45-60 minutes of a lead's day and still arrive half-complete. This automation turns a 2-minute intake into a finished, art-direction-locked brief. The lead approves it instead of writing it.</p>
+
+    <div class="flow">
+      <div class="fnode trigger reveal"><div class="fk">Trigger</div><h5>Intake form</h5><p>Slack workflow or Jira ticket: asset type, event, deadline, notes. 2 minutes.</p></div>
+      <div class="fnode ai reveal"><div class="fk">AI Step</div><h5>Context pull</h5><p>Fetches the event's locked art direction, palette tokens and voice guide from the brief library.</p></div>
+      <div class="fnode ai reveal"><div class="fk">AI Step</div><h5>Brief assembly</h5><p>LLM composes objective, spec, ready-to-run prompts, QA checklist and naming convention.</p></div>
+      <div class="fnode gatef reveal"><div class="fk">Human Gate</div><h5>Lead approval</h5><p>Creative lead reviews in Slack: approve, edit, or reject with a reason that gets logged.</p></div>
+      <div class="fnode out reveal"><div class="fk">Output</div><h5>Distributed</h5><p>Brief lands in Jira + Drive, assignee notified, iteration log row pre-created.</p></div>
+    </div>
+
+    <div class="spec">
+      <div class="speccard reveal"><div class="k">Inputs</div><ul><li>Asset type + event name</li><li>Deadline and requester</li><li>Free-text intent notes</li><li>Brief library: art direction locks, voice guide, past briefs</li></ul></div>
+      <div class="speccard reveal"><div class="k">Outputs</div><ul><li>Structured brief (objective, spec, references)</li><li>Ready-to-paste generation prompts</li><li>QA checklist + file naming</li><li>Pre-created iteration log entry</li></ul></div>
+      <div class="speccard reveal"><div class="k">Tools</div><ul><li>n8n (self-hosted) as the spine</li><li>Claude API for assembly</li><li>Slack intake + approval buttons</li><li>Jira + Google Drive delivery</li></ul></div>
+      <div class="speccard reveal"><div class="k">Trigger</div><p>New intake submission, or a Jira ticket labeled <b>needs-brief</b>. Nothing runs on a schedule; the queue is event-driven.</p></div>
+      <div class="speccard reveal"><div class="k">Human approval</div><p>Two gates: the lead approves the brief before distribution, and the art director owns changes to any locked token the brief cites. AI never edits the locks.</p></div>
+      <div class="speccard reveal"><div class="k">Time saved · estimate</div><div class="big">~7.5 h / week</div><p>Assumes 10 briefs a week at 45-60 min each by hand, versus 2 min intake plus 3 min review. Roughly a full workday back for actual creative direction.</p></div>
+    </div>
+
+    <div class="proto reveal">
+      <span class="pel1"></span><span class="pel2"></span>
+      <div class="ptag"><span class="live"></span>WORKING PROTOTYPE · RUNS RIGHT HERE</div>
+      <h3>Brief Generator</h3>
+      <p class="psub">The assembly step, live in this page. Pick an asset type, describe the intent, generate. The output inherits the Golden Hour Bay locks automatically: palette, style line, voice. Copy it or download as Markdown.</p>
+      <div class="pgrid">
+        <div class="pform">
+          <div class="fld"><label>Asset type</label>
+            <select id="bType">
+              <option value="keyart">Key Art / Promo Image</option>
+              <option value="pet">Collectible Character</option>
+              <option value="ui">UI Screen Background</option>
+              <option value="music">Music Loop</option>
+              <option value="copy">Marketing Copy</option>
+            </select>
+          </div>
+          <div class="fld"><label>Event</label><input id="bEvent" type="text" value="Summer Festival" placeholder="e.g. Summer Festival"></div>
+          <div class="fld"><label>Subject / intent</label><textarea id="bIntent" placeholder="e.g. a shy pink axolotl pet with a seashell hat, rare tier">a shy pink axolotl pet with a seashell hat, rare tier</textarea></div>
+          <div class="fld"><label>Deadline</label><input id="bDue" type="text" value="3 working days" placeholder="e.g. 3 working days"></div>
+          <div class="fld"><label>Requester</label><input id="bReq" type="text" value="LiveOps team" placeholder="team or name"></div>
+          <button class="genbtn" id="genBtn">Generate Brief</button>
+        </div>
+        <div class="pout">
+          <div class="obar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="fn" id="outName">brief.md</span>
+            <span class="acts">
+              <button class="copybtn" id="copyOut">Copy</button>
+              <button class="copybtn" id="dlOut">Download .md</button>
+            </span>
+          </div>
+          <div class="obody" id="outBody" hidden></div>
+          <div class="empty" id="outEmpty"><div class="rel"></div>Fill the form and hit generate.<br>The brief assembles from the locked art direction.</div>
+        </div>
+      </div>
+      <div class="mapnote"><div>In production this exact template runs as the n8n LLM node: same locks, same structure, with Slack intake in front and the approval gate behind. The prototype proves the core claim: <b>a brief is a deterministic function of (request × locked art direction)</b>, so no lead should be writing one from scratch.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART 4 ============ -->
+<section id="p4">
+  <div class="wrap">
+    <div class="part-tag"><span class="pt-num">Part 04</span><span class="pt-topic">AI Discovery</span></div>
+    <div class="part-rule"></div>
+    <h2>Three tools I would <span class="hl">actually deploy.</span></h2>
+    <p class="sub">Not the obvious picks. Each one is chosen against a specific studio pain: legal exposure on generated art, static UI in a live game, and the concept-to-3D gap of a 3D title.</p>
+    <div class="tools4">
+      <div class="tool4 reveal">
+        <div class="tn">Bria</div>
+        <div class="tc">IP-safe visual generation</div>
+        <div class="t4row"><span class="k" style="color:var(--red)">Tested for this submission</span><p>I re-posed the approved Mango in Bria, <b>same character, brand new pose</b>, through my own tool built on the Bria API. IP-safe by default, so nothing about it worries legal.</p></div>
+        <div class="meshproof">
+          <figure><img src="assets/mango_09.jpeg" alt="Mango reference pose"><figcaption>reference</figcaption></figure>
+          <span class="arrow">→</span>
+          <figure><img src="assets/mango_repose.png" alt="Mango re-posed by Bria"><figcaption>new pose · Bria</figcaption></figure>
+        </div>
+        <p class="meshcap">One approved pet becomes an idle, a win, a jump, a popup, <b>without redrawing and without an IP question</b>. That kind of reuse is what a live game depends on.</p>
+        <div class="t4row"><span class="k">What it does</span><p>Image generation, editing and <b>re-posing</b> APIs (including the background removal used throughout Part 2) trained exclusively on <b>licensed data</b>, with legal indemnification and attribution built in.</p></div>
+        <div class="t4row"><span class="k">Why this one</span><p>For a publicly traded studio, the deciding factor is less about which model looks best and more about which output legal can approve. Indemnified generation removes the biggest silent blocker to shipping AI art in production, and the API drops straight into tools the studio already builds.</p></div>
+        <div class="t4row"><span class="k">Who uses it</span><p>All production artists via API in the asset pipeline; legal sets policy once instead of reviewing per-asset.</p></div>
+        <div class="t4row"><span class="k">Limitations</span><p>Its raw aesthetic ceiling trails the frontier consumer models, so it works best as the production and editing layer, with exploration done elsewhere.</p></div>
+        <div class="impact"><span class="k mono" style="font-size:9.5px;letter-spacing:.09em;color:var(--dim)">IMPACT</span><div class="impact-lvl cat">Category change</div><p style="font-size:12px;color:var(--muted);margin-top:6px">Unblocks AI art for <b>commercial release</b>, not just concepting.</p></div>
+      </div>
+      <div class="tool4 reveal">
+        <div class="tn">Rive</div>
+        <div class="tc">Runtime interactive animation</div>
+        <div class="t4row"><span class="k" style="color:var(--red)">Live in this card</span><p>A pure-CSS stand-in for the kind of juicy button Rive ships as a tiny <b>.riv</b>. It plays its hover on a loop, and still reacts when you actually hover or press it.</p></div>
+        <div class="rivedemo">
+          <div class="rivestage"><button class="rivebtn" type="button"><span class="label">Keep Playing</span></button></div>
+          <figcaption>CSS demo · Rive would ship this as a .riv</figcaption>
+        </div>
+        <p class="meshcap">In Rive this is a small state machine (idle, hover, pressed) driven by the runtime: a fraction of a video's size, and editable by a designer without an engineer.</p>
+        <div class="t4row"><span class="k">What it does</span><p>Editor plus lightweight runtime for interactive vector animation with state machines. Event screens, buttons, mascot reactions and progress bars ship as tiny <b>.riv files that run inside the game</b>, not as baked video.</p></div>
+        <div class="t4row"><span class="k">Why this one</span><p>Casual mobile games depend on juicy UI, and today most of it is hand-built in engine or exported as heavy sequences. Rive makes the event lobby above breathe (water shimmer, lantern sway, pet idle loops) at a fraction of the size and iteration cost, and designers edit it without an engineer.</p></div>
+        <div class="t4row"><span class="k">Who uses it</span><p>UI artists and motion designers author; client engineers integrate the runtime once.</p></div>
+        <div class="t4row"><span class="k">Limitations</span><p>Vector-first, so painterly 3D renders still enter as raster layers; team needs a short state-machine learning curve.</p></div>
+        <div class="impact"><span class="k mono" style="font-size:9.5px;letter-spacing:.09em;color:var(--dim)">IMPACT</span><div class="impact-lvl high">High</div><p style="font-size:12px;color:var(--muted);margin-top:6px">Live-feeling event UI on every screen, <b>days instead of sprints</b> per animated surface.</p></div>
+      </div>
+      <div class="tool4 reveal">
+        <div class="tn">Meshy</div>
+        <div class="tc">Image-to-3D for a 3D game</div>
+        <div class="t4row"><span class="k" style="color:var(--red)">Tested for this submission</span><p>I fed the approved 2D Mango into Meshy 6 and got back a <b>3D base mesh in minutes</b>, same silhouette, lei and pose. An actual model you can spin and light, not a mockup. It is the concept-to-3D gap starting to close.</p></div>
+        <div class="meshproof">
+          <figure><img src="assets/mango_09.jpeg" alt="Mango 2D keeper render"><figcaption>2D keeper</figcaption></figure>
+          <span class="arrow">→</span>
+          <figure><img src="assets/mango_mesh.png" alt="Mango 3D mesh from Meshy"><figcaption>3D mesh · Meshy 6</figcaption></figure>
+        </div>
+        <p class="meshcap">Minutes from 2D keeper to a recognizable 3D base mesh. It is a blockout the character team still <b>retopologizes and rigs</b>, not a shippable asset. What it saves is the head start.</p>
+        <div class="t4row"><span class="k">What it does</span><p>Turns concept images into textured 3D meshes with PBR maps and auto-retopology options. The approved 2D pet renders in Part 2 become <b>posable 3D drafts</b> in minutes.</p></div>
+        <div class="t4row"><span class="k">Why this one</span><p>This is a 3D Bingo game. The expensive part is not the concept art, it is turning that concept into a model. Image-to-3D collapses the roughest early stretch of that work, so 3D artists start from a moving draft instead of a blank viewport, and marketing gets turnaround renders from any angle immediately.</p></div>
+        <div class="t4row"><span class="k">Who uses it</span><p>3D character and prop artists for blockouts; UA team for quick-angle renders of approved characters.</p></div>
+        <div class="t4row"><span class="k">Limitations</span><p>Output is a draft, never ship-ready: topology and rigging still need professional passes. It is best used as the sketching stage of 3D work.</p></div>
+        <div class="impact"><span class="k mono" style="font-size:9.5px;letter-spacing:.09em;color:var(--dim)">IMPACT</span><div class="impact-lvl med">Medium</div><p style="font-size:12px;color:var(--muted);margin-top:6px">Cuts character blockout time <b>from days to hours</b> and multiplies how many concepts reach 3D review.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BONUS ============ -->
+<section id="bonus" class="alt">
+  <div class="wrap">
+    <div class="part-tag"><span class="pt-num">Bonus</span><span class="pt-topic">Beyond the Brief</span></div>
+    <div class="part-rule"></div>
+    <h2>Prompt DNA: art direction<br>as <span class="hl">versioned tokens.</span></h2>
+    <p class="sub">The idea behind everything above, written up as a studio system. Plus a second artifact already built and in use.</p>
+    <div class="bonusgrid">
+      <div class="bonuscard reveal">
+        <h4>The system</h4>
+        <p>Every event gets a <b>DNA file</b>: frozen style tokens with version numbers, owned by the art director, stored in git like code. Prompts are assembled from tokens, never written freehand. When the AD updates a token, every downstream prompt template inherits it, and the version stamp travels into each asset's metadata, so any rendered image can be traced back to the exact style state that produced it.</p>
+        <div class="dna">
+<span class="cm"># summer-festival.dna.yml · v1.3 · owner: art director</span><br>
+<span class="tok">STYLE</span>:&nbsp;&nbsp;glossy stylized 3D render, Pixar-like casual mobile game asset<br>
+<span class="tok">LIGHT</span>:&nbsp;&nbsp;warm golden-hour lighting, subtle rim light<br>
+<span class="tok">FORM</span>:&nbsp;&nbsp;&nbsp;big expressive friendly eyes, soft rounded shapes<br>
+<span class="tok">TECH</span>:&nbsp;&nbsp;&nbsp;subsurface scattering, glossy highlights, high detail<br>
+<span class="tok">PALETTE</span>: FFC24B FF9E45 FF6F61 FF5C7A 1FB8A6 F3D9A4 3A2A5C FFF4E2<br>
+<span class="cm"># character prompt = STYLE + [</span><span class="var">CHARACTER</span><span class="cm">] + FORM + TECH + LIGHT</span><br>
+<span class="cm"># changing a token bumps the version; assets log the version they used</span>
+        </div>
+        <p style="margin-top:12px">This is why 45 character generations across 5 pets read as one family, and why the next event starts from a system instead of a blank prompt.</p>
+      </div>
+      <div class="bonuscard reveal">
+        <h4>Already shipped alongside this test</h4>
+        <p><b>Iteration Log</b>, a working tool built for this submission: drag-and-drop gallery where every generation gets a verdict (kept, rejected, needs fix), its prompt, and its reason. Filterable, sortable, exportable.</p>
+        <p>It exists because the assignment asks for rejected outcomes, and most creatives lose exactly that history. Logging during the work, instead of reconstructing it afterwards, is a habit worth building in. The rejects sharpen the next prompt, and the reasons help onboard the next hire.</p>
+        <a class="logcta" href="iterations-log.html" target="_blank" rel="noopener">Open the Iteration Log<span class="ar">&#8599;</span></a>
+        <p class="mono" style="font-size:11px;color:var(--dim);margin-top:10px">55 entries seeded from Part 2 · filter, reorder, edit, export JSON · runs in the browser, no backend</p>
+        <p style="margin-top:14px">Together the two form a loop: <b>DNA defines what to generate, the log records what happened, and the deltas feed the next DNA version.</b> That loop is the creative evaluation framework this bonus is really about.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ellipses">
+    <span class="el solid" style="left:-60px;bottom:-50px;width:170px;height:104px"></span>
+    <span class="el outline white far" style="left:110px;bottom:-24px;width:70px;height:42px"></span>
+    <span class="el solid far" style="right:60px;top:20px;width:40px;height:24px"></span>
+    <span class="el solid" style="right:-50px;top:-30px;width:140px;height:86px"></span>
+  </div>
+  <div class="wrap">
+    <div class="fdisp">Thank <span class="hl">you</span>.</div>
+    <p style="margin-top:14px">AI Creative Manager test submission · Ran Segal</p>
+  </div>
+</footer>
+
+<div class="lb" id="lb"><img id="lbImg" alt=""><div class="lbcap" id="lbCap"></div></div>
+
+<script>
+/* ---------- palette ---------- */
+const PALETTE=[["Sunset Gold","#FFC24B"],["Amber Glow","#FF9E45"],["Coral Sunset","#FF6F61"],["Rose Dusk","#FF5C7A"],["Tropical Teal","#1FB8A6"],["Dusk Purple","#3A2A5C"],["Warm Sand","#F3D9A4"],["Cream Light","#FFF4E2"]];
+const pal=document.getElementById('palette');
+PALETTE.forEach(([nm,hx])=>{
+  const d=document.createElement('div');d.className='sw';
+  d.innerHTML=`<div class="c" style="background:${hx}"></div><div class="m"><div class="nm">${nm}</div><div class="hx">${hx}</div></div>`;
+  d.addEventListener('click',()=>{navigator.clipboard.writeText(hx).catch(()=>{});const h=d.querySelector('.hx');const o=h.textContent;h.textContent='copied!';setTimeout(()=>h.textContent=o,900)});
+  pal.appendChild(d);
+});
+
+/* ---------- contact sheet ---------- */
+const PET_TEMPLATE=c=>`Cute collectible sea-creature character, glossy stylized 3D render, Pixar-like casual mobile game asset. [CHARACTER: ${c}]. Big expressive friendly eyes, soft rounded shapes, glossy highlights, subsurface scattering, warm golden-hour lighting, subtle rim light. Centered, full body, clean neutral soft-gradient background for easy cutout, consistent character style, premium mobile game quality, high detail.`;
+const FAMILIES={
+  "Coral · crab":{prefix:"crab",count:8,kept:2,tool:"Nano Banana Pro (Google Flow)",
+    charDesc:"a cheerful orange crab with raised claws and a tiny flower lei",
+    prompt:PET_TEMPLATE("a cheerful orange crab with raised claws and a tiny flower lei"),
+    keptNote:"Keeper: claws-up pose reads at icon size, warmest smile, brown eyes with big catchlights, cleanest vinyl-toy gloss on the shell.",
+    rejNote:"Judged against the lock: silhouette at icon size, eye language, glossy render consistency.",
+    notes:{1:"Blue eyes break the cast's brown-eye consistency.",3:"Gray muted background, flatter light.",4:"Raised eyestalks, different anatomy from the rest of the set.",5:"Blue eyes, near-white background.",6:"Floating mid-air pose, pinkish background.",7:"Eyestalks again, anatomy mismatch with the set.",8:"Blue eyes, cool blue background."}},
+  "Shelly · turtle":{prefix:"turtle",count:8,kept:4,tool:"Nano Banana Pro (Google Flow)",
+    charDesc:"a calm green sea turtle wearing a tropical flower lei",
+    prompt:PET_TEMPLATE("a calm green sea turtle wearing a tropical flower lei"),
+    keptNote:"Keeper: lei reads clearly, calm warm expression, vinyl-toy shell gloss matches the set, grounded three-quarter pose.",
+    rejNote:"Judged against the lock: silhouette at icon size, eye language, glossy render consistency.",
+    notes:{1:"Standing on a pedestal prop, cool blue background.",2:"Blue-tinted background, off the warm peach palette.",3:"More ceramic-porcelain material than the set's vinyl look.",5:"Blue-green background, waving side pose.",6:"Sand pedestal prop, side profile pose.",7:"Half-lidded sleepy eyes, expression off.",8:"Cooler gray background, chunkier proportions, gold-outlined shell differs from the set."}},
+  "Twinkle · starfish":{prefix:"starfish",count:12,kept:12,tool:"Nano Banana Pro (Google Flow)",
+    charDesc:"a sparkly pink starfish with big eyes and a subtle glitter shimmer",
+    prompt:PET_TEMPLATE("a sparkly pink starfish with big eyes and a subtle glitter shimmer"),
+    keptNote:"Keeper after 12 rounds: clean 5-point silhouette, warm studio gradient, brown eyes, sparkle without over-detail. Hardest character to land. Final consistency-pass retouch (_edited file).",
+    rejNote:"Longest family: backgrounds and lighting kept drifting off the warm studio look.",
+    notes:{1:"Cool lavender-gray background, off the warm palette.",2:"Lavender-tinted background, softer mushier render.",3:"Lavender background, flatter lighting.",4:"Leaning side pose weakens the star silhouette.",5:"Orange bokeh background breaks the clean studio look.",6:"Elongated blob shape loses the 5-point star form.",7:"Olive-green iris breaks the brown-eye cast rule.",8:"Blurry sunset-bokeh background, different depth treatment.",9:"Real-sky background instead of the studio gradient.",10:"Strong backlit glow, lighting differs from the set.",11:"Purple-pink tint, flat frontal light."}},
+  "Splash · dolphin":{prefix:"dolphin",count:8,kept:7,tool:"Nano Banana Pro (Google Flow)",
+    charDesc:"a playful teal dolphin mid-jump with sparkling water drops",
+    prompt:PET_TEMPLATE("a playful teal dolphin mid-jump with sparkling water drops"),
+    keptNote:"Keeper: mid-jump arc gives the collection its motion, friendliest eye, water drops catch the rim light. Consistency-pass retouch regraded it into golden-hour warmth (_edited file).",
+    rejNote:"Judged against the lock: silhouette at icon size, eye language, glossy render consistency.",
+    notes:{1:"Orange life-vest prop, cool gray background.",2:"Cool blue-gray background, flat shadow floor.",3:"Strong runner-up; background paler and cooler than the set.",4:"Real sunset-sky photo background instead of the studio gradient.",5:"Over-saturated orange-purple duotone background.",6:"Cool blue background, heavier splash.",8:"Brown eye (good) but medal and armband props plus mint background break the set."}},
+  "Mango · host":{prefix:"mango",count:9,kept:9,tool:"Nano Banana Pro (Google Flow) + Bria",
+    charDesc:"a joyful toucan festival host with a flower lei, one wing raised",
+    prompt:PET_TEMPLATE("a joyful toucan festival host with a flower lei, one wing raised in welcome"),
+    keptNote:"Keeper: host energy, open beak, welcoming wing spread, grounded feet. Two consistency-pass revisions after Bria cutout (_edited and _edited_2): edge cleanup and lighting alignment.",
+    rejNote:"Judged against the lock: the host must match the cast's energy and eye language.",
+    notes:{1:"Cutout on flat gray-white background; cooler light, smaller flatter render.",2:"Perched on a wooden branch, a prop no other character has.",3:"Good render but calmer pose; less energy than the cast's happy poses.",4:"Winking closed eye breaks the open brown-eye consistency.",5:"Flying pose, eyes closed, feet not grounded.",6:"Neutral cream background, closed beak, subdued expression.",7:"Stiffer pose, beak closed, slightly cooler background.",8:"Calm raised-wing pose, less expressive than the winner."}},
+  "Scenes":{prefix:"scene",count:10,kept:2,tool:"Nano Banana Pro (Google Flow)",
+    charDesc:"background plate: festival bay, no characters, no text",
+    prompt:"Mobile game UI background, glossy stylized 3D casual game, summer beach festival at golden-hour sunset, tropical bay with sparkling turquoise water, warm amber sky, paper lanterns and bunting, soft depth of field, no characters, no text, clean composition with clear central space for UI panels, premium casual mobile game art.",
+    keptNote:"Keeper: the only background rendered in the cast's modeled-3D style. Peach sky, teal water and bunting repeat the character palette; clean central space for UI panels; world-first, with the mechanic kept out of the plate.",
+    rejNote:"Common kills: painterly 2D style mismatching the 3D cast, clutter, or baked-in characters and logos.",
+    notes:{1:"Darker red sky, empty stage area, flatter render.",3:"Too empty and washed out at the center.",4:"Painterly 2D illustration style vs the characters' 3D look.",5:"Lighthouse and bar composition, busier and different.",6:"Key art with characters baked in, not a reusable background.",7:"Flatter, more 2D rendering.",8:"Promo key art with a logo baked in, not a background.",9:"Soft painterly style, less 3D.",10:"Painterly wide lagoon, style mismatch with the 3D characters."}}
+};
+const tabs=document.getElementById('sheetTabs'),sheet=document.getElementById('sheet');
+let activeFam=Object.keys(FAMILIES)[0];
+function renderTabs(){
+  tabs.innerHTML='';
+  Object.entries(FAMILIES).forEach(([nm,f])=>{
+    const b=document.createElement('button');b.className='stab'+(nm===activeFam?' on':'');
+    b.innerHTML=`${nm} <span class="ct">${f.count}</span>`;
+    b.addEventListener('click',()=>{activeFam=nm;renderTabs();renderSheet()});
+    tabs.appendChild(b);
+  });
+}
+const pop=document.createElement('div');pop.className='pop';document.body.appendChild(pop);
+function cellNoteHTML(f,i){
+  const kept=i===f.kept;
+  return `<div class="phead"><span class="pttl">${f.prefix}_${String(i).padStart(2,'0')}</span><span class="pst ${kept?'k':'r'}">${kept?'KEPT':'NOT RETAINED'}</span></div>
+    <div class="prow"><div class="pk">Tool</div><div class="pv"><b>${f.tool}</b></div></div>
+    <div class="prow"><div class="pk">Note</div><div class="pv">${kept?f.keptNote:(f.notes&&f.notes[i])||f.rejNote}</div></div>`;
+}
+function showPop(f,i,x,y){
+  pop.innerHTML=cellNoteHTML(f,i);
+  pop.classList.add('on');
+  const w=350,h=pop.offsetHeight;
+  pop.style.left=Math.min(x+16,window.innerWidth-w-12)+'px';
+  pop.style.top=Math.min(y+16,window.innerHeight-h-12)+'px';
+}
+function renderSheet(){
+  const f=FAMILIES[activeFam];sheet.innerHTML='';
+  document.getElementById('famDesc').textContent=`[${f.charDesc}]`;
+  document.getElementById('famFull').textContent=f.prompt;
+  document.getElementById('famFull').hidden=true;
+  document.getElementById('famToggle').textContent='Full template';
+  for(let i=1;i<=f.count;i++){
+    const nn=String(i).padStart(2,'0');
+    const c=document.createElement('div');c.className='cell'+(i===f.kept?' kept':'');
+    c.innerHTML=`<img loading="lazy" src="assets/thumbs/${f.prefix}_${nn}.jpeg" alt="${f.prefix} v${nn}"><span class="vn">v${nn}</span>`;
+    c.addEventListener('click',()=>{pop.classList.remove('on');openLb(`assets/thumbs/${f.prefix}_${nn}.jpeg`,cellNoteHTML(f,i))});
+    c.addEventListener('mouseenter',e=>showPop(f,i,e.clientX,e.clientY));
+    c.addEventListener('mousemove',e=>{if(pop.classList.contains('on')){const w=350,h=pop.offsetHeight;pop.style.left=Math.min(e.clientX+16,window.innerWidth-w-12)+'px';pop.style.top=Math.min(e.clientY+16,window.innerHeight-h-12)+'px'}});
+    c.addEventListener('mouseleave',()=>pop.classList.remove('on'));
+    sheet.appendChild(c);
+  }
+}
+document.getElementById('famToggle').addEventListener('click',()=>{
+  const full=document.getElementById('famFull');
+  full.hidden=!full.hidden;
+  document.getElementById('famToggle').textContent=full.hidden?'Full template':'Hide template';
+});
+document.getElementById('famCopy').addEventListener('click',async e=>{
+  try{await navigator.clipboard.writeText(FAMILIES[activeFam].prompt)}catch(_){}
+  e.target.textContent='Copied ✓';e.target.classList.add('ok');
+  setTimeout(()=>{e.target.textContent='Copy';e.target.classList.remove('ok')},1400);
+});
+renderTabs();renderSheet();
+
+/* ---------- lightbox ---------- */
+const lb=document.getElementById('lb'),lbImg=document.getElementById('lbImg');
+function openLb(src,note){lbImg.src=src;const cap=document.getElementById('lbCap');if(note){cap.innerHTML=note;cap.style.display='block'}else{cap.style.display='none';cap.innerHTML=''}lb.classList.add('on')}
+lb.addEventListener('click',()=>lb.classList.remove('on'));
+document.querySelectorAll('[data-zoom]').forEach(im=>{im.style.cursor='zoom-in';im.addEventListener('click',()=>openLb(im.src))});
+
+/* ---------- copy buttons (prompts) ---------- */
+document.querySelectorAll('.promptbox').forEach(box=>{
+  const btn=box.querySelector('.copybtn'),pre=box.querySelector('pre');
+  btn.addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText(pre.innerText.trim())}catch(e){}
+    btn.textContent='Copied ✓';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('ok')},1500);
+  });
+});
+
+/* ---------- UI prompt toggle (plate / lobby / progression) ---------- */
+const UIPROMPTS={
+  plate:{label:"UI · Scene Plate",text:"Mobile game UI background, glossy stylized 3D casual game, summer beach festival at golden-hour sunset, tropical bay with sparkling turquoise water, warm amber sky, paper lanterns and bunting, soft depth of field, no characters, no text, clean composition with clear central space for UI panels, premium casual mobile game art, vertical 9:16 aspect."},
+  lobby:{label:"UI · Event Lobby",text:"Mobile game event lobby UI, glossy stylized 3D casual game, summer beach festival at golden-hour sunset over a tropical bay. Center: a rounded coral-orange event panel titled SUMMER FESTIVAL with a countdown timer and a row of four collection slots (first pet unlocked, three locked with padlocks) and a large glossy green PLAY button below. A cheerful toucan host wearing a flower lei stands on a wooden dock at left. Coin and gem currency bar top-left. Warm amber palette, paper lanterns, premium casual mobile game art, horizontal layout."},
+  prog:{label:"UI · Progression",text:"Mobile game event progression UI, glossy stylized 3D casual game, summer beach festival at golden-hour sunset over a tropical lagoon. Four stone tide-pools along the shoreline: a sparkly pink starfish, an orange crab and a green flower-lei turtle surfaced and unlocked, the fourth pool locked with a gold padlock. Top: a gold progress bar reading 3/4 Complete to Win. Top-right: a treasure-chest reward with an Event ends timer. A toucan host with a flower lei points from the lower-left corner. Large glossy green KEEP PLAYING button at the bottom center. Warm amber palette, premium casual mobile game art, horizontal layout."}
+};
+const uiTabs=document.getElementById('uiPtabs');
+if(uiTabs){
+  uiTabs.querySelectorAll('.ptab').forEach(b=>b.addEventListener('click',()=>{
+    uiTabs.querySelectorAll('.ptab').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    const p=UIPROMPTS[b.dataset.ui];
+    document.getElementById('uiPlabel').textContent=p.label;
+    document.getElementById('uiPprompt').textContent=p.text;
+  }));
+}
+
+/* ---------- brief generator prototype ---------- */
+const DNA={
+  style:"glossy stylized 3D render, Pixar-like casual mobile game asset",
+  light:"warm golden-hour lighting, subtle rim light",
+  form:"big expressive friendly eyes, soft rounded shapes",
+  tech:"subsurface scattering, glossy highlights, high detail, premium mobile game quality",
+  palette:"Sunset Gold #FFC24B · Amber Glow #FF9E45 · Coral Sunset #FF6F61 · Rose Dusk #FF5C7A · Tropical Teal #1FB8A6 · Warm Sand #F3D9A4 · Dusk Purple #3A2A5C · Cream Light #FFF4E2",
+  voice:"warm summer energy, collection-first, gentle FOMO, short and rhythmic"
+};
+const TYPES={
+  keyart:{label:"Key Art / Promo Image",spec:"Vertical promo image, App Store ready. Faces readable at 160px thumbnail. Hold clean space across the top for the event title lockup.",
+    prompt:i=>`Premium ${DNA.style}, vertical key art composition. ${i}. Golden-hour sunset over a tropical bay, festive beach setting with bunting and paper lanterns. ${DNA.form}, ${DNA.tech}, ${DNA.light}, long soft shadows, clean uncluttered background, generous clear space across the top for the event title. Vibrant, premium, inviting, 4k.`,
+    qa:["Reads at thumbnail size (check at 160px)","All faces unobstructed and lit","Logo negative space held","Palette compliance vs DNA v1.3","No text baked into the image"]},
+  pet:{label:"Collectible Character",spec:"Full-body character on clean gradient background for cutout. Must sit beside the existing cast without style drift.",
+    prompt:i=>`Cute collectible sea-creature character, ${DNA.style}. [CHARACTER: ${i}]. ${DNA.form}, ${DNA.tech}, ${DNA.light}. Centered, full body, clean neutral soft-gradient background for easy cutout, consistent character style.`,
+    qa:["Silhouette readable at icon size","Eye language matches existing cast","Style line unchanged from DNA v1.3","Cutout-friendly background","Generate 8+ variants before selecting"]},
+  ui:{label:"UI Screen Background",spec:"Character-free, text-free background plate with central clearance for UI panels. 9:16 vertical.",
+    prompt:i=>`Mobile game UI background, ${DNA.style.replace(" asset","")}, ${i}, golden-hour sunset, tropical bay, paper lanterns and bunting, soft depth of field, no characters, no text, clean composition with clear central space for UI panels, vertical 9:16 aspect.`,
+    qa:["Zero characters or text in plate","Central area calm enough for panels","Contrast supports light UI chrome","Palette compliance vs DNA v1.3"]},
+  music:{label:"Music Loop",spec:"60-90s instrumental loop, seamless. Judge on phone speaker at low volume.",
+    prompt:i=>`Upbeat tropical summer festival background music for a casual mobile game, ${i}, cheerful and warm, ukulele, marimba, steel drums, light hand percussion, playful bright melody, moderate upbeat tempo, seamless loop, instrumental, no vocals, polished game audio, 60-90 seconds.\n\nStyle field: tropical, casual game, ukulele, marimba, upbeat, instrumental`,
+    qa:["Loop point seamless","Survives 30 repetitions without fatigue","Does not fight win fanfares","Generate 4-6 candidates, log rejects"]},
+  copy:{label:"Marketing Copy",spec:"Banner: 5-8 words. Popup: one line + CTA button text. Localization-ready, no idioms.",
+    prompt:i=>`Write 5 options each for an App Store feature banner (5-8 words) and an in-game event popup (one line + CTA button label) for: ${i}.\nVoice: ${DNA.voice}. Collection is the hero, bingo mechanics stay implicit. Avoid idioms that break in localization.`,
+    qa:["Banner within 5-8 words","CTA is a verb phrase","No unverifiable claims (legal)","Tone matches voice guide","Localization-safe phrasing"]}
+};
+const $=id=>document.getElementById(id);
+let lastBrief="";
+$('genBtn').addEventListener('click',()=>{
+  const t=TYPES[$('bType').value];
+  const ev=$('bEvent').value.trim()||"Summer Festival";
+  const intent=$('bIntent').value.trim()||"(no intent provided)";
+  const due=$('bDue').value.trim()||"TBD";
+  const req=$('bReq').value.trim()||"unassigned";
+  const slug=ev.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+  const fname=`brief_${slug}_${$('bType').value}.md`;
+  lastBrief=
+`# CREATIVE BRIEF · ${ev} · ${t.label}
+generated by Brief Generator v1 · DNA: summer-festival v1.3 · status: AWAITING LEAD APPROVAL
+
+## Objective
+${t.label} for the "${ev}" event. Intent: ${intent}
+
+## Deliverable Spec
+${t.spec}
+Deadline: ${due} · Requester: ${req}
+
+## Art Direction Locks (inherited, do not edit here)
+STYLE   ${DNA.style}
+LIGHT   ${DNA.light}
+FORM    ${DNA.form}
+TECH    ${DNA.tech}
+PALETTE ${DNA.palette}
+
+## Ready-to-run Prompt
+${t.prompt(intent)}
+
+## QA Checklist
+${t.qa.map(q=>"[ ] "+q).join("\n")}
+
+## Process Requirements
+[ ] Log every generation in the iteration log (verdict + reason)
+[ ] File naming: ${slug}_${$('bType').value}_vNN
+[ ] Rejected outcomes kept, not deleted
+
+-- approval: creative lead ______ · art direction owner consulted if any lock needs changing`;
+  $('outName').textContent=fname;
+  const body=$('outBody');
+  body.hidden=false;$('outEmpty').style.display='none';
+  body.textContent=lastBrief;
+  body.scrollTop=0;
+});
+$('copyOut').addEventListener('click',async e=>{
+  if(!lastBrief)return;
+  try{await navigator.clipboard.writeText(lastBrief)}catch(_){}
+  e.target.textContent='Copied ✓';setTimeout(()=>e.target.textContent='Copy',1400);
+});
+$('dlOut').addEventListener('click',()=>{
+  if(!lastBrief)return;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([lastBrief],{type:'text/markdown'}));
+  a.download=$('outName').textContent;a.click();URL.revokeObjectURL(a.href);
+});
+
+/* ---------- scroll reveal + nav highlight ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const secs=[...document.querySelectorAll('section[id]')],links=[...document.querySelectorAll('nav a')];
+const nio=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+e.target.id))}});
+},{rootMargin:'-30% 0px -60% 0px'});
+secs.forEach(s=>nio.observe(s));
+
+/* ---------- part 1 pipeline rail ---------- */
+const PHASE={A:'Define',B:'Produce',C:'Ship'};
+const STAGES=[
+  {n:'01',phase:'A',name:'Ideation',
+   does:'30 scored event concepts per sprint. Output: <b>1-page direction doc</b>',
+   gate:'Creative lead locks direction. <b>Volume is cheap. Direction is not</b>',
+   scale:'Prompt library per game. Each campaign starts further ahead',
+   tools:'Claude · Perplexity · Miro AI · store intel',
+   auto:'Concept volume, trend + competitor scan, scoring drafts',
+   manual:'Framing the problem, picking the direction',
+   bneck:'Alignment drift → 1-page doc first, fresh player data in'},
+  {n:'02',phase:'A',name:'Concept &amp; Art Direction',
+   does:'Moodboards to concepts. Output: <b>3 concepts + 1 locked AD page</b>',
+   gate:'Art director signs the lock. <b>Highest-leverage decision in the pipeline</b>',
+   scale:'Lock written as reusable prompt tokens (see Bonus)',
+   tools:'Nano Banana Pro · Midjourney · Figma',
+   auto:'Style exploration, moodboard volume',
+   manual:'The lock itself: palette, render style, lighting, cast',
+   bneck:'Decision fatigue → cap the shortlist at 3'},
+  {n:'03',phase:'A',name:'UX Exploration',
+   does:'Flows for lobby, progression, album. Output: <b>approved flows + wireframes</b>',
+   gate:'Game designer validates loop logic against the <b>live economy</b>',
+   scale:'UX pattern library of proven event screens',
+   tools:'Figma AI · Claude · HTML prototypes',
+   auto:'Variant drafts, flow diagrams',
+   manual:'Economy hooks, friction calls, game feel',
+   bneck:'AI mockups look finished too early → wireframe-first'},
+  {n:'04',phase:'B',name:'Visual Asset Creation',par:true,
+   does:'Key art, characters, UI art vs locked tokens. Output: <b>approved asset pack + cutouts</b>',
+   gate:'Human curates the batch, 1 of 8-12. <b>Never the first output</b>',
+   scale:'One approved style → N pets, skins, seasonal variants',
+   tools:'Nano Banana Pro (Google Flow) · Bria · Photoshop',
+   auto:'Batch generation (4 prompts at once in Flow), background removal, cutouts',
+   manual:'Selection, paint-over, retouch to brand',
+   bneck:'Consistency at volume → locked refs, seeds, template prompt'},
+  {n:'05',phase:'B',name:'Music &amp; Sound',par:true,
+   does:'Loop, SFX, VO from a style brief. Output: <b>cleared audio kit</b>',
+   gate:'Audio direction sets the brief and clears rights. <b>Every loop is judged on a phone speaker</b>',
+   scale:'Audio identity kit per game, reused every event',
+   tools:'Suno · ElevenLabs VO + SFX',
+   auto:'Track generation, SFX drafts, multilingual VO',
+   manual:'Mix, loop trim, rights clearance',
+   bneck:'Licensing → pre-cleared kit'},
+  {n:'06',phase:'B',name:'Copywriting',par:true,
+   does:'Headlines, CTAs, popups, store copy. Output: <b>localized copy matrix, 12+ languages</b>',
+   gate:'Copy lead picks and trims. <b>Claims never ship unreviewed</b>',
+   scale:'Voice guide as system prompt. 1 master → 30+ locales',
+   tools:'Claude · voice guide · localization',
+   auto:'Bulk drafts, locale fan-out',
+   manual:'Final voice, legal claims',
+   bneck:'Native review → by market priority, not alphabetically'},
+  {n:'07',phase:'C',name:'Review &amp; QA',
+   does:'Auto pre-checks + one structured review. Output: <b>signed-off batch</b>',
+   gate:'<b>Sign-off is mandatory.</b> AD for craft, product for economy, brand for IP',
+   scale:'QA checklist becomes a script. Humans see only what passed',
+   tools:'spec-check scripts · LLM vision · Figma review',
+   auto:'Palette, safe areas, contrast, artifact detection',
+   manual:'Creative judgment on what passed',
+   bneck:'<b>#1:</b> review queue → pre-checks + async batch approvals'},
+  {n:'08',phase:'C',name:'Iteration',
+   does:'Performance data to improved variants. Output: <b>next test batch</b>',
+   gate:'Data proposes, judgment disposes. <b>A person still owns the winning variant</b>',
+   scale:'Winners feed the prompt library and the next ideation',
+   tools:'iteration log · A/B data · fast regen',
+   auto:'Variant regeneration, data pulls, logging',
+   manual:'Deciding what to fix and why',
+   bneck:'Endless loops → 2 cycles max, ship or kill',
+   loop:'<b>Loop back to stages 4-6.</b> Direction stays locked. Max 2 cycles.'},
+  {n:'09',phase:'C',name:'Final Delivery',
+   does:'Package + handoff. Output: <b>named, sized, uploaded + decision log</b>',
+   gate:'Release owner confirms the manifest. <b>One person, one checklist</b>',
+   scale:'One-command delivery after sign-off',
+   tools:'export scripts · naming scripts · DAM upload',
+   auto:'Export matrix, naming, versioned upload',
+   manual:'One release approval',
+   bneck:'None if templated'}
+];
+const rail=document.getElementById('piperail');
+if(rail){
+  STAGES.forEach(s=>{
+    const el=document.createElement('article');
+    el.className='pstage ph'+s.phase;
+    el.innerHTML=`
+      <div class="ps-idx"><span>${s.n}</span></div>
+      <div class="ps-top">
+        <span class="ps-phase p${s.phase}"><span class="pdot"></span>Phase ${s.phase} · ${PHASE[s.phase]}</span>
+        ${s.par?'<span class="ps-par">&#8214; parallel</span>':''}
+      </div>
+      <h4 class="ps-title">${s.name}</h4>
+      <p class="ps-does">${s.does.replace(/ Output: <b>(.*?)<\/b>/, '<br><b>Output: $1</b>')}</p>
+      <hr class="ps-rule">
+      <div class="ps-gate">
+        <div class="ps-lbl red">Human gate</div>
+        <div class="ps-gline">${s.gate.replace(/\.(\s*<\/b>)?\s+/, (m,c)=>'.'+(c?c.trim():'')+'<br>')}</div>
+      </div>
+      <div class="ps-detail">
+        ${s.loop?`<div class="ps-row"><div class="ps-lbl">Loop rule</div><div class="ps-line">${s.loop}</div></div>`:''}
+        <div class="ps-row"><div class="ps-lbl">Scales to</div><div class="ps-line">${s.scale}</div></div>
+        <div class="ps-row"><div class="ps-lbl">Tools</div><div class="ps-line">${s.tools}</div></div>
+        <div class="ps-row"><div class="ps-lbl">Automated</div><div class="ps-line">${s.auto}</div></div>
+        <div class="ps-row"><div class="ps-lbl">Manual</div><div class="ps-line">${s.manual}</div></div>
+        <div class="ps-row"><div class="ps-lbl">Bottleneck</div><div class="ps-line">${s.bneck}</div></div>
+      </div>`;
+    rail.appendChild(el);
+  });
+  const railPrev=document.getElementById('railPrev'),railNext=document.getElementById('railNext'),railPos=document.getElementById('railPos');
+  const fadeL=document.getElementById('fadeL'),fadeR=document.getElementById('fadeR');
+  const railStep=()=>{const c=rail.querySelector('.pstage');return c?c.getBoundingClientRect().width+14:320;};
+  railPrev.addEventListener('click',()=>rail.scrollBy({left:-railStep(),behavior:'smooth'}));
+  railNext.addEventListener('click',()=>rail.scrollBy({left:railStep(),behavior:'smooth'}));
+  const railUpdate=()=>{
+    const idx=Math.round(rail.scrollLeft/railStep());
+    railPos.textContent=String(Math.min(idx+1,STAGES.length)).padStart(2,'0')+' / '+String(STAGES.length).padStart(2,'0');
+    const atStart=rail.scrollLeft<8, atEnd=rail.scrollLeft+rail.clientWidth>=rail.scrollWidth-8;
+    railPrev.disabled=atStart;
+    railNext.disabled=atEnd;
+    fadeL.classList.toggle('on',!atStart);
+    fadeR.classList.toggle('on',!atEnd);
+    const rr=rail.getBoundingClientRect();
+    rail.querySelectorAll('.pstage').forEach(c=>{
+      const b=c.getBoundingClientRect();
+      const vis=Math.max(0,Math.min(b.right,rr.right)-Math.max(b.left,rr.left));
+      const ratio=b.width?vis/b.width:1;
+      const foc=ratio>=0.9;
+      c.style.opacity=(foc?1:Math.max(0.28,0.26+0.74*(ratio/0.9))).toFixed(3);
+      c.style.filter=foc?'none':'blur('+((1-ratio/0.9)*3).toFixed(2)+'px)';
+      c.style.transform=foc?'none':'scale('+(0.94+0.06*(ratio/0.9)).toFixed(3)+')';
+    });
+  };
+  rail.addEventListener('scroll',railUpdate,{passive:true});
+  window.addEventListener('resize',railUpdate);
+  railUpdate();
+}
+</script>
+</body>
+</html>

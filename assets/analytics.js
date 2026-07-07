@@ -3,7 +3,7 @@
    Enhanced Measurement (scroll, outbound clicks, file downloads) is toggled on
    in the GA4 data stream UI, not here — no extra code needed. */
 (function () {
-  var GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // <-- replace with your real GA4 Measurement ID
+  var GA_MEASUREMENT_ID = 'G-VHCG9S271R'; // GA4 Measurement ID — Bingo Bay Submission property
 
   // Don't load in local dev (python http.server on localhost) — keeps test hits out of reports.
   var host = location.hostname;
